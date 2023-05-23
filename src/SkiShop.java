@@ -1,5 +1,8 @@
 import java.util.*;                                     // Needed for Scanner and ArrayLists objects
 import java.io.*;                                       // Needed for reading and writing to files
+import javax.swing.*;                                   // For creating GUIs and its graphical components   
+import java.awt.*;                                      // For communicating to Operating System with GUIs
+import java.awt.event.*;                                // For event handling with ActionListeners  
 
 /**
  * Lead Author(s):
@@ -12,16 +15,46 @@ import java.io.*;                                       // Needed for reading an
  * Version/date: 1.0
  * 
  * Responsibilities of class:
- * A ski shop which allows a customer to login, search through inventory,
+ * A ski shop website which allows a customer to login, search through inventory,
  * add items to a cart or wishlist, checkout, and make a purchase
  */
 
-public class SkiShop
+public class SkiShop extends JFrame 
 {
-    private String shopName;                            // The ski shop HAS-A name
-    private Customer customer = new Customer();         // The ski shop HAS-A customer
-    private Cart cart = new Cart();                     // The ski shop HAS-A cart which holds the desired products to purchase
-    private Scanner input = new Scanner(System.in);     // The ski shop HAS-A Scanner object for user input
+    private String shopName;                            // The Ski Shop HAS-A name
+    private Customer customer = new Customer();         // The Ski Shop HAS-A customer
+    private Cart cart = new Cart();                     // The Ski Shop HAS-A cart which holds the desired products to purchase
+    private Scanner input = new Scanner(System.in);     // The Ski Shop HAS-A Scanner object for user input
+    private JPanel mainPanel,                           // The Ski Shop HAS-A main panel for all components
+                   displayPanel,                        // The Ski Shop HAS-A panel for displaying login message, cart, login, etc
+                   headerPanel,                         // The Ski Shop HAS-A panel for the header of page
+                   searchPanel,                         // The Ski Shop HAS-A panel for searching for Products (within header)
+                   topRightPanel,                       // The Ski Shop HAS-A panel for login and cart options (within header)
+                   featuredPanel;                       // The Ski Shop HAS-A panel for featured products
+    private JLabel welcomeLabel,                        // The Ski Shop HAS-A label for welcome prompt
+                   titleLabel;                          // The Ski Shop HAS-A label for the title of page
+    private JTextArea welcomeTextArea;                  // The Ski Shop HAS-A text area for welcome message
+    private JButton menuButton,                         // The Ski Shop HAS-A button for Product menu 
+                    searchButton,                       // The Ski Shop HAS-A button for searching for Products
+                    loginButton,                        // The Ski Shop HAS-A button for login options
+                    cartButton;                         // The Ski Shop HAS-A button for cart options
+    private JMenuBar menuBar;                           // The Ski Shop HAS-A menu bar       
+    private JMenu fileMenu;                             // The Ski Shop HAS-A file menu
+    private JPopupMenu productMenu,                     // The Ski Shop HAS-A popup menu for Product types
+                       loginMenu,                       // The Ski Shop HAS-A popup menu for login options         
+                       cartMenu;                        // The Ski Shop HAS-A popup menu for cart options   
+    private JMenuItem skisItem,                         // The Ski Shop HAS-A menu item for skis
+                      snowboardItem,                    // The Ski Shop HAS-A menu item for snowboards
+                      bootsItem,                        // The Ski Shop HAS-A menu item for boots
+                      bindingsItem,                     // The Ski Shop HAS-A menu item for bindings
+                      polesItem,                        // The Ski Shop HAS-A menu item for ski poles
+                      signInItem,                       // The Ski Shop HAS-A menu item for signing in
+                      createNewLoginItem,               // The Ski Shop HAS-A menu item for creating a new login
+                      displayCartItem,                  // The Ski Shop HAS-A menu item for displaying cart products
+                      checkoutItem,                     // The Ski Shop HAS-A menu item for checking out
+                      exitMenuItem,                     // The Ski Shop HAS-A menu item for exiting program
+                      restartMenuItem;                  // The Ski Shop HAS-A menu item for restarting program
+    private JTextField searchBar;                       // The Ski Shop HAS-A text field for a search bar        
 
     // The ski shop HAS-MANY types of products                                                   
     private String[] types = {"Skis", "Snowboard", "Boots", "Bindings", "Poles"};
@@ -31,22 +64,17 @@ public class SkiShop
      */
     public static void main(String[] args) throws Exception
     {
-        // Create instance of program
-        SkiShop skitopia = new SkiShop("Skitopia");
-
          // Try-catch block to start program that might throw exceptions
          try 
          {  
-            // Call method to start program
-            skitopia.enter();
+            // Create instance of program
+            new SkiShop("Skitopia").enter();
          }
          // Catch and handle any exceptions thrown during program execution
          catch (Exception anyExceptions)
          {
-            // Display error message
-            System.out.println("Error encountered, please try again.");
-            // Restart program
-            skitopia.enter();
+            // Display stack trace
+            anyExceptions.printStackTrace();
          }
     }
    
@@ -61,45 +89,276 @@ public class SkiShop
     }
 
     /**
-     * Purpose: enter and begin your shopping experience
-     * @throws Exception
+     * Purpose: Build GUI for Ski Shop website as you "enter" shop
      */
-    public void enter() throws Exception
+    public void enter()
     {
-        // Try block to run searches that may throw exceptions
-        try 
-        {
-            // Call welcome method for store greeting
-            welcome();
-        }
-        // Catch block to catch any exceptions thrown from search methods
-        catch (Exception anyExceptions)
-        {
-            // Display error message
-            System.out.println("Error encountered, please try again.");
-            // Recall welcome method to restart program
-            welcome();
-        }
+        // Create a panel for the main content
+        mainPanel = new JPanel(new BorderLayout());
+        // Set background color white
+        mainPanel.setBackground(Color.WHITE);
+        // Add main panel to frame
+        add(mainPanel);
+
+        // Set title of page
+        setTitle(shopName);
+        // Create title label
+        titleLabel = new JLabel(new ImageIcon("Title.jpg"));
+
+        // Build menu bar
+        buildMenuBar();
+        // Build display panel
+        buildDisplayPanel();
+        // Build header panel
+        buildHeaderPanel();
+        // Build search panel (within header)
+        buildSearchPanel();
+        // Build top right panel for login and cart options (within header)
+        buildTopRightPanel();
+        // // Build featured products panel
+        // buildFeaturedPanel();
+
+        // Allow program to be exited by clicking on "X"
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Set size of frame
+        setPreferredSize(new Dimension(700, 425));
+        // Pack all panels together to reduce any empty space
+        pack();
+        // Center frame on screen
+        setLocationRelativeTo(null);
+        // Set visible to be displayed on screen
+        setVisible(true);
     }
 
     /**
-     * Purpose: display welcome message
-     * @throws Exception
+     * Purpose: Build menu bar for File menu
      */
-    public void welcome() throws Exception
+    public void buildMenuBar()
     {
-        // Create an intro/welcome message when entering shop for reuse
-        String intro = "Welcome to " + shopName + "!\n\nOur ski shop is the " +
+        // Create menu bar
+        menuBar = new JMenuBar();
+        // Create file menu
+        fileMenu = new JMenu("File");
+        // Create menu item to restart program
+        restartMenuItem = new JMenuItem("Restart");
+        // Add Action Listener to restart program when clicked
+        restartMenuItem.addActionListener(new RestartItemListener(this));
+        // Create menu item to exit program
+        exitMenuItem = new JMenuItem("Exit");
+        // Add Action Listener to exit program when clicked
+        exitMenuItem.addActionListener(new ExitItemListener());
+        // Add menu item to file menu
+        fileMenu.add(restartMenuItem);
+        // Add menu item to file menu
+        fileMenu.add(exitMenuItem);
+        // Add file menu to menu bar
+        menuBar.add(fileMenu);
+        // Add menu bar to frame
+        setJMenuBar(menuBar);
+    }
+
+    /**
+     * Purpose: Build panel to organize top components of page (title, menu, search, etc)
+     */
+    public void buildHeaderPanel()
+    {
+        // Create a panel for the header of the page
+        headerPanel = new JPanel(new BorderLayout());
+        // Set background color white
+        headerPanel.setBackground(Color.WHITE);
+        // Add header panel to main panel
+        mainPanel.add(headerPanel, BorderLayout.NORTH);
+        // Add title label to header panel
+        headerPanel.add(titleLabel, BorderLayout.CENTER);
+    }
+
+    /**
+     * Purpose: Build panel for displaying welcome message, login, cart, etc
+     */
+    public void buildDisplayPanel()
+    {
+        // Create display panel
+        displayPanel = new JPanel(new BorderLayout());
+        // Set background color white
+        displayPanel.setBackground(Color.WHITE);
+        // Create welcome label
+        welcomeLabel = new JLabel("\t\t\t\tWelcome to " + shopName + "!");
+        // Center horizontally
+        welcomeLabel.setHorizontalAlignment(JLabel.CENTER); 
+        // Center vertically
+        welcomeLabel.setVerticalAlignment(JLabel.CENTER); 
+        // Add label to welcome panel
+        displayPanel.add(welcomeLabel, BorderLayout.NORTH);
+        // Create welcome message
+        welcomeTextArea = new JTextArea("Our ski shop is the " +
                             "one-stop shop for all the gear and equipment " +
-                            "necessary\nfor an epic run on the slopes. Whether " +
-                            "you're a skier or a snowboarder,\na beginner at " +
-                            "the bunny slopes or an expert tearing up the park,\n" +
+                            "necessary for an epic run on the slopes. Whether " +
+                            "you're a skier or a snowboarder, a beginner at " +
+                            "the bunny slopes or an expert tearing up the park, " +
                             "we have everything you need to tackle the mountains " +
-                            "\nand ride the powder with confidence!";
-        // Display welcome message
-        System.out.println(intro);
-        // Call login method
-        login();
+                            "and ride the powder with confidence!");
+        // Restrict editing
+        welcomeTextArea.setEditable(false);
+        // Wrap sentences to next line
+        welcomeTextArea.setLineWrap(true);
+        // Wrap entire words to next line
+        welcomeTextArea.setWrapStyleWord(true);
+        // Set an empty border for spacing
+        welcomeTextArea.setBorder(BorderFactory.createEmptyBorder(30, 30, 50, 30));
+        // Add text area to welcome panel
+        displayPanel.add(welcomeTextArea, BorderLayout.SOUTH);
+        // Add welcome panel to main panel
+        mainPanel.add(displayPanel, BorderLayout.CENTER);
+    }
+
+    /**
+     * Purpose: Build panel to for search bar and button
+     */
+    public void buildSearchPanel()
+    {
+        // Create panel for search bar
+        searchPanel = new JPanel();
+        // Set an empty border for spacing
+        searchPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        // Set background color white
+        searchPanel.setBackground(Color.WHITE);
+        // Add header panel to header panel
+        headerPanel.add(searchPanel, BorderLayout.EAST);
+
+        // Create the Product menu
+        menuButton = new JButton("Menu");
+        // Create popup menu of different Product types
+        productMenu = new JPopupMenu();
+        // Create Skis menu item
+        skisItem = new JMenuItem("Skis");
+        // Create Snowboard menu item
+        snowboardItem = new JMenuItem("Snowboard");
+        // Create Boots menu item
+        bootsItem = new JMenuItem("Boots");
+        // Create Bindings menu item
+        bindingsItem = new JMenuItem("Bindings");
+        // Create Poles menu item
+        polesItem = new JMenuItem("Poles");
+        // Add Skis menu item to Product popup menu
+        productMenu.add(skisItem);
+        // Add Snowboard menu item to Product popup menu
+        productMenu.add(snowboardItem);
+        // Add Boots menu item to Product popup menu
+        productMenu.add(bootsItem);
+        // Add Bindings menu item to Product popup menu
+        productMenu.add(bindingsItem);
+        // Add Poles menu item to Product popup menu
+        productMenu.add(polesItem);
+        // Add Action Listener to display Product types when clicked
+        menuButton.addActionListener(new MenuListener(productMenu, menuButton));
+        // Add Product menu button to search panel
+        searchPanel.add(menuButton);
+
+        // Create a text field for search
+        searchBar = new JTextField("Search");
+        // Set the number of columns (desired width)
+        searchBar.setColumns(10);
+        // Set the text color for the placeholder
+        searchBar.setForeground(Color.GRAY); 
+        // Display message when mouse hovers over text field
+        searchBar.setToolTipText("Enter a product or keyword");
+        // Add Action Listener to search for Products when pressing enter
+        searchBar.addActionListener(new SearchBarListener(searchBar));
+        // Add to search panel
+        searchPanel.add(searchBar);
+
+        // Create a button for search
+        searchButton = new JButton(new ImageIcon("MagnifyingGlass.jpg"));
+        // Display message when mouse hovers over button
+        searchButton.setToolTipText("Click to search for product");
+        // Add Action Listener to search for Products when clicking on search button
+        searchButton.addActionListener(new SearchButtonListener(searchBar));
+        // Add to search panel
+        searchPanel.add(searchButton);
+    }
+
+    /**
+     * Purpose: Build panel for login and cart functions
+     */
+    public void buildTopRightPanel()
+    {
+        // Create panel
+        topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        // Set an empty border for spacing
+        topRightPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        // Set background color white
+        topRightPanel.setBackground(Color.WHITE);
+        // Add top right panel to header panel
+        headerPanel.add(topRightPanel, BorderLayout.NORTH);
+
+        // Create login button
+        loginButton = new JButton("Login");
+        // Add Action Listener to display login prompts
+        loginButton.addActionListener(new LoginButtonListener(this));
+        // Add login button to top right panel
+        topRightPanel.add(loginButton);
+
+        // Create a button for the cart
+        cartButton = new JButton("Cart");
+        // Add Action Listener to display cart options when clicked
+        cartButton.addActionListener(new CartListener(this));
+        // Add cart button to top right panel
+        topRightPanel.add(cartButton);
+    }
+
+    /**
+     * Purpose: build panel to display featured products
+     */
+    public void buildFeaturedPanel()
+    {
+        // Create a panel for the featured products
+        featuredPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        // Set an empty border for spacing
+        featuredPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        // Set background color white
+        featuredPanel.setBackground(Color.WHITE);
+        // Add featured panel to main panel
+        mainPanel.add(featuredPanel, BorderLayout.SOUTH);
+    }
+
+    /**
+     * Purpose: retrieve main panel
+     */
+    public JPanel getMainPanel()
+    {
+        return mainPanel;
+    }
+
+    /**
+     * Purpose: retrieve display panel
+     */
+    public JPanel getDisplayPanel()
+    {
+        return displayPanel;
+    }
+
+    /**
+     * Purpose: set new display panel
+     */
+    public void setDisplayPanel(JPanel newPanel)
+    {
+        displayPanel = newPanel;
+    }
+
+    /**
+     * Purpose: retrieve Customer
+     */
+    public Customer getCustomer()
+    {
+        return customer;
+    }
+
+    /**
+     * Purpose: retrieve cart
+     */
+    public Cart getCart()
+    {
+        return cart;
     }
 
     /**
@@ -111,8 +370,10 @@ public class SkiShop
         // Create string to ask for login for reuse
         String login = "\nEnter email to login\n(\"new\" to create a new user or " +
                         "\"guest\" to checkout as a guest):";
-        // Display login message
+
+        // Display prompt
         System.out.println(login);
+
         // Ask for user input
         String user = input.nextLine().toLowerCase();
         // If user enters "guest", display greetings message
