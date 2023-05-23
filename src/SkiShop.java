@@ -361,45 +361,45 @@ public class SkiShop extends JFrame
         return cart;
     }
 
-    /**
-     * Purpose: ask user to login / create a new login / or checkout as a guest
-     * @throws Exception
-     */
-    public void login() throws Exception
-    {
-        // Create string to ask for login for reuse
-        String login = "\nEnter email to login\n(\"new\" to create a new user or " +
-                        "\"guest\" to checkout as a guest):";
-
-        // Display prompt
-        System.out.println(login);
-
-        // Ask for user input
-        String user = input.nextLine().toLowerCase();
-        // If user enters "guest", display greetings message
-        if (user.equals("guest"))
-        {
-            System.out.println("\nGreetings guest!");
-            mainMenu();
-        }
-        // If user enters "new", call createLogin() method
-        else if (user.equals("new"))
-        {
-            createLogin();
-            mainMenu();
-        }
-        // If entry contains a domain name, display greetings message
-        else if ((user.contains("@gmail.com")) || (user.contains("@hotmail.com")) || (user.contains("@yahoo.com")))
-        {
-            System.out.println("\nGreetings " + user + "!");
-            mainMenu();
-        }
-        // Otherwise, if entry doesn't contain any of the above, call login() method to restart
-        else 
-        {
-            login();
-        }
-    }
+//    /**
+//     * Purpose: ask user to login / create a new login / or checkout as a guest
+//     * @throws Exception
+//     */
+//    public void login() throws Exception
+//    {
+//        // Create string to ask for login for reuse
+//        String login = "\nEnter email to login\n(\"new\" to create a new user or " +
+//                        "\"guest\" to checkout as a guest):";
+//
+//        // Display prompt
+//        System.out.println(login);
+//
+//        // Ask for user input
+//        String user = input.nextLine().toLowerCase();
+//        // If user enters "guest", display greetings message
+//        if (user.equals("guest"))
+//        {
+//            System.out.println("\nGreetings guest!");
+//            mainMenu();
+//        }
+//        // If user enters "new", call createLogin() method
+//        else if (user.equals("new"))
+//        {
+//            createLogin();
+//            mainMenu();
+//        }
+//        // If entry contains a domain name, display greetings message
+//        else if ((user.contains("@gmail.com")) || (user.contains("@hotmail.com")) || (user.contains("@yahoo.com")))
+//        {
+//            System.out.println("\nGreetings " + user + "!");
+//            mainMenu();
+//        }
+//        // Otherwise, if entry doesn't contain any of the above, call login() method to restart
+//        else 
+//        {
+//            login();
+//        }
+//    }
 
     /**
      * Purpose: to create a new login
