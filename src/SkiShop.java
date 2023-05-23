@@ -40,18 +40,12 @@ public class SkiShop extends JFrame
                     cartButton;                         // The Ski Shop HAS-A button for cart options
     private JMenuBar menuBar;                           // The Ski Shop HAS-A menu bar       
     private JMenu fileMenu;                             // The Ski Shop HAS-A file menu
-    private JPopupMenu productMenu,                     // The Ski Shop HAS-A popup menu for Product types
-                       loginMenu,                       // The Ski Shop HAS-A popup menu for login options         
-                       cartMenu;                        // The Ski Shop HAS-A popup menu for cart options   
+    private JPopupMenu productMenu;                     // The Ski Shop HAS-A popup menu for Product types
     private JMenuItem skisItem,                         // The Ski Shop HAS-A menu item for skis
                       snowboardItem,                    // The Ski Shop HAS-A menu item for snowboards
                       bootsItem,                        // The Ski Shop HAS-A menu item for boots
                       bindingsItem,                     // The Ski Shop HAS-A menu item for bindings
                       polesItem,                        // The Ski Shop HAS-A menu item for ski poles
-                      signInItem,                       // The Ski Shop HAS-A menu item for signing in
-                      createNewLoginItem,               // The Ski Shop HAS-A menu item for creating a new login
-                      displayCartItem,                  // The Ski Shop HAS-A menu item for displaying cart products
-                      checkoutItem,                     // The Ski Shop HAS-A menu item for checking out
                       exitMenuItem,                     // The Ski Shop HAS-A menu item for exiting program
                       restartMenuItem;                  // The Ski Shop HAS-A menu item for restarting program
     private JTextField searchBar;                       // The Ski Shop HAS-A text field for a search bar        
@@ -361,86 +355,86 @@ public class SkiShop extends JFrame
         return cart;
     }
 
-//    /**
-//     * Purpose: ask user to login / create a new login / or checkout as a guest
-//     * @throws Exception
-//     */
-//    public void login() throws Exception
-//    {
-//        // Create string to ask for login for reuse
-//        String login = "\nEnter email to login\n(\"new\" to create a new user or " +
-//                        "\"guest\" to checkout as a guest):";
-//
-//        // Display prompt
-//        System.out.println(login);
-//
-//        // Ask for user input
-//        String user = input.nextLine().toLowerCase();
-//        // If user enters "guest", display greetings message
-//        if (user.equals("guest"))
-//        {
-//            System.out.println("\nGreetings guest!");
-//            mainMenu();
-//        }
-//        // If user enters "new", call createLogin() method
-//        else if (user.equals("new"))
-//        {
-//            createLogin();
-//            mainMenu();
-//        }
-//        // If entry contains a domain name, display greetings message
-//        else if ((user.contains("@gmail.com")) || (user.contains("@hotmail.com")) || (user.contains("@yahoo.com")))
-//        {
-//            System.out.println("\nGreetings " + user + "!");
-//            mainMenu();
-//        }
-//        // Otherwise, if entry doesn't contain any of the above, call login() method to restart
-//        else 
-//        {
-//            login();
-//        }
-//    }
+    // /**
+    //  * Purpose: ask user to login / create a new login / or checkout as a guest
+    //  * @throws Exception
+    //  */
+    // public void login() throws Exception
+    // {
+    //     // Create string to ask for login for reuse
+    //     String login = "\nEnter email to login\n(\"new\" to create a new user or " +
+    //                     "\"guest\" to checkout as a guest):";
 
-//    /**
-//     * Purpose: to create a new login
-//     */
-//    public void createLogin()
-//    {
-//        // Display login message
-//        System.out.println("\nLet's create a new login!");
-//        // Create string to ask for email for reuse
-//        String enterEmail = "Enter your email:";
-//        // Initialize a variable for exiting loop
-//        int exitLoop = -1;
-//        // Continue to ask for email if no domain name was entered
-//        while (exitLoop < 0)
-//        {
-//            // Display "enter email" message
-//            System.out.println(enterEmail);
-//            // Assign user input to email
-//            String email = input.nextLine();
-//            // If input contains an email domain name, increment variable to exit loop
-//            if ((email.contains("@gmail.com")) || (email.contains("@hotmail.com")) || (email.contains("@yahoo.com")))
-//            {
-//                customer.setEmailAddress(email);
-//                exitLoop++;
-//            }
-//        }
-//        // Ask for first name
-//        System.out.println("\nEnter your first name:");
-//        // Set as customer's first name
-//        customer.setFirstName(input.nextLine());
-//        // Ask for last name
-//        System.out.println("\nEnter your last name:");
-//        // Set as customer's last name
-//        customer.setLastName(input.nextLine());
-//        // Ask for shoe size
-//        System.out.println("\nEnter your shoe size:");
-//        // Set as customer's shoe size
-//        customer.setShoeSize(Integer.valueOf(input.nextLine()));
-//        // Display greetings message
-//        System.out.println("\nGreetings " + customer.getFirstName() + "!");
-//    }
+    //     // Display prompt
+    //     System.out.println(login);
+
+    //     // Ask for user input
+    //     String user = input.nextLine().toLowerCase();
+    //     // If user enters "guest", display greetings message
+    //     if (user.equals("guest"))
+    //     {
+    //         System.out.println("\nGreetings guest!");
+    //         mainMenu();
+    //     }
+    //     // If user enters "new", call createLogin() method
+    //     else if (user.equals("new"))
+    //     {
+    //         createLogin();
+    //         mainMenu();
+    //     }
+    //     // If entry contains a domain name, display greetings message
+    //     else if ((user.contains("@gmail.com")) || (user.contains("@hotmail.com")) || (user.contains("@yahoo.com")))
+    //     {
+    //         System.out.println("\nGreetings " + user + "!");
+    //         mainMenu();
+    //     }
+    //     // Otherwise, if entry doesn't contain any of the above, call login() method to restart
+    //     else 
+    //     {
+    //         login();
+    //     }
+    // }
+
+    // /**
+    //  * Purpose: to create a new login
+    //  */
+    // public void createLogin()
+    // {
+    //     // Display login message
+    //     System.out.println("\nLet's create a new login!");
+    //     // Create string to ask for email for reuse
+    //     String enterEmail = "Enter your email:";
+    //     // Initialize a variable for exiting loop
+    //     int exitLoop = -1;
+    //     // Continue to ask for email if no domain name was entered
+    //     while (exitLoop < 0)
+    //     {
+    //         // Display "enter email" message
+    //         System.out.println(enterEmail);
+    //         // Assign user input to email
+    //         String email = input.nextLine();
+    //         // If input contains an email domain name, increment variable to exit loop
+    //         if ((email.contains("@gmail.com")) || (email.contains("@hotmail.com")) || (email.contains("@yahoo.com")))
+    //         {
+    //             customer.setEmailAddress(email);
+    //             exitLoop++;
+    //         }
+    //     }
+    //     // Ask for first name
+    //     System.out.println("\nEnter your first name:");
+    //     // Set as customer's first name
+    //     customer.setFirstName(input.nextLine());
+    //     // Ask for last name
+    //     System.out.println("\nEnter your last name:");
+    //     // Set as customer's last name
+    //     customer.setLastName(input.nextLine());
+    //     // Ask for shoe size
+    //     System.out.println("\nEnter your shoe size:");
+    //     // Set as customer's shoe size
+    //     customer.setShoeSize(Integer.valueOf(input.nextLine()));
+    //     // Display greetings message
+    //     System.out.println("\nGreetings " + customer.getFirstName() + "!");
+    // }
 
     /**
      * Purpose: start the main menu
