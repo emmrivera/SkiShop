@@ -401,46 +401,46 @@ public class SkiShop extends JFrame
 //        }
 //    }
 
-    /**
-     * Purpose: to create a new login
-     */
-    public void createLogin()
-    {
-        // Display login message
-        System.out.println("\nLet's create a new login!");
-        // Create string to ask for email for reuse
-        String enterEmail = "Enter your email:";
-        // Initialize a variable for exiting loop
-        int exitLoop = -1;
-        // Continue to ask for email if no domain name was entered
-        while (exitLoop < 0)
-        {
-            // Display "enter email" message
-            System.out.println(enterEmail);
-            // Assign user input to email
-            String email = input.nextLine();
-            // If input contains an email domain name, increment variable to exit loop
-            if ((email.contains("@gmail.com")) || (email.contains("@hotmail.com")) || (email.contains("@yahoo.com")))
-            {
-                customer.setEmailAddress(email);
-                exitLoop++;
-            }
-        }
-        // Ask for first name
-        System.out.println("\nEnter your first name:");
-        // Set as customer's first name
-        customer.setFirstName(input.nextLine());
-        // Ask for last name
-        System.out.println("\nEnter your last name:");
-        // Set as customer's last name
-        customer.setLastName(input.nextLine());
-        // Ask for shoe size
-        System.out.println("\nEnter your shoe size:");
-        // Set as customer's shoe size
-        customer.setShoeSize(Integer.valueOf(input.nextLine()));
-        // Display greetings message
-        System.out.println("\nGreetings " + customer.getFirstName() + "!");
-    }
+//    /**
+//     * Purpose: to create a new login
+//     */
+//    public void createLogin()
+//    {
+//        // Display login message
+//        System.out.println("\nLet's create a new login!");
+//        // Create string to ask for email for reuse
+//        String enterEmail = "Enter your email:";
+//        // Initialize a variable for exiting loop
+//        int exitLoop = -1;
+//        // Continue to ask for email if no domain name was entered
+//        while (exitLoop < 0)
+//        {
+//            // Display "enter email" message
+//            System.out.println(enterEmail);
+//            // Assign user input to email
+//            String email = input.nextLine();
+//            // If input contains an email domain name, increment variable to exit loop
+//            if ((email.contains("@gmail.com")) || (email.contains("@hotmail.com")) || (email.contains("@yahoo.com")))
+//            {
+//                customer.setEmailAddress(email);
+//                exitLoop++;
+//            }
+//        }
+//        // Ask for first name
+//        System.out.println("\nEnter your first name:");
+//        // Set as customer's first name
+//        customer.setFirstName(input.nextLine());
+//        // Ask for last name
+//        System.out.println("\nEnter your last name:");
+//        // Set as customer's last name
+//        customer.setLastName(input.nextLine());
+//        // Ask for shoe size
+//        System.out.println("\nEnter your shoe size:");
+//        // Set as customer's shoe size
+//        customer.setShoeSize(Integer.valueOf(input.nextLine()));
+//        // Display greetings message
+//        System.out.println("\nGreetings " + customer.getFirstName() + "!");
+//    }
 
     /**
      * Purpose: start the main menu
