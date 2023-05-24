@@ -15,12 +15,12 @@ import java.awt.event.*;                // For ActionListener interface
  * Displays popup menu of Product categories to select
  */
 
-public class MenuListener implements ActionListener
+public class MenuButtonListener implements ActionListener
 {
-	private JPopupMenu productMenu;		// MenuListener HAS-A pop up product menu
-	private JButton menuButton;			// MenuListener HAS-A menu button
+	private JPopupMenu productMenu;		// MenuButtonListener HAS-A pop up product menu
+	private JButton menuButton;			// MenuButtonListener HAS-A menu button
 
-	public MenuListener(JPopupMenu productMenu, JButton menuButton)
+	public MenuButtonListener(JPopupMenu productMenu, JButton menuButton)
 	{
 		this.productMenu = productMenu;	// Assign product menu
 		this.menuButton = menuButton;	// Assign menu button

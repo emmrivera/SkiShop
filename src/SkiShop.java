@@ -244,7 +244,7 @@ public class SkiShop extends JFrame
         // Add Poles menu item to Product popup menu
         productMenu.add(polesItem);
         // Add Action Listener to display Product types when clicked
-        menuButton.addActionListener(new MenuListener(productMenu, menuButton));
+        menuButton.addActionListener(new MenuButtonListener(productMenu, menuButton));
         // Add Product menu button to search panel
         searchPanel.add(menuButton);
 
