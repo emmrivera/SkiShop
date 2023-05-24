@@ -470,7 +470,6 @@ public class SkiShop extends JFrame
             // Restart program from main menu
             mainMenu();
         }
-        
     }
 
     /**
@@ -544,7 +543,7 @@ public class SkiShop extends JFrame
         // Store input
         String brand = input.nextLine().toLowerCase();
 
-        // Narrow search critera based on brand
+        // Narrow search critera based on model
         System.out.println("\nDo you know the model of the product?\n" +
                             "(Enter model or \"all\" to include all models):");
         // Store input
