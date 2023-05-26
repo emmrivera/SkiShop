@@ -2,7 +2,6 @@ import java.util.*;                                     // Needed for Scanner an
 import java.io.*;                                       // Needed for reading and writing to files
 import javax.swing.*;                                   // For creating GUIs and its graphical components   
 import java.awt.*;                                      // For communicating to Operating System with GUIs
-import java.awt.event.*;                                // For event handling with ActionListeners  
 
 /**
  * Lead Author(s):
@@ -24,7 +23,6 @@ public class SkiShop extends JFrame
     private String shopName;                            // The Ski Shop HAS-A name
     private Customer customer = new Customer();         // The Ski Shop HAS-A customer
     private Cart cart = new Cart();                     // The Ski Shop HAS-A cart which holds the desired products to purchase
-    private Scanner input = new Scanner(System.in);     // The Ski Shop HAS-A Scanner object for user input
     private JPanel mainPanel,                           // The Ski Shop HAS-A main panel for all components
                    displayPanel,                        // The Ski Shop HAS-A panel for displaying login message, cart, login, etc
                    headerPanel,                         // The Ski Shop HAS-A panel for the header of page
@@ -750,7 +748,7 @@ public class SkiShop extends JFrame
         // Assign desired selection (based on item number / model index) to a Product array
         Product[] modelArray = searchResults.getSpecificModel(itemNumber);
         // Create text field for user input
-        JTextField sizeField = null;
+        JTextField sizeField = new JTextField("");
         // If desired item is within the search results list, continue
         if (itemInSearchResults)
         { 
@@ -796,7 +794,7 @@ public class SkiShop extends JFrame
             promptPanel.add(sizeLabel);
 
             // Create text field for user input
-            sizeField = new JTextField("Enter available size");
+            sizeField.setText("Enter available size");
             // Set the number of columns (desired width)
             sizeField.setColumns(10);
             // Set the text color for the placeholder
