@@ -722,8 +722,6 @@ public class SkiShop extends JFrame
         // Otherwise, display no results found
         else 
         {
-            // Display number of results
-            System.out.println("\nWe found no results:\n");
             // Return to main menu
             mainMenu();
         }
