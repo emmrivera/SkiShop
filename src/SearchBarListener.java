@@ -18,18 +18,33 @@ import java.awt.event.*;                // For ActionListener interface
 
 public class SearchBarListener implements ActionListener
 {
+	private SkiShop shop;					// SearchBarListener HAS-A Ski Shop
 	private JTextField searchBar;			// SearchBarListener HAS-A search bar
 
 	// Assignment Constructor for search bar and button
-	public SearchBarListener(JTextField searchBar)
+	public SearchBarListener(SkiShop shop, JTextField searchBar)
 	{
+		this.shop = shop;					// Assign ski shop
 		this.searchBar = searchBar; 		// Assign search bar
 	}
 
+	// Searches for Product when user enters input into search bar
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		// Searches for Product when user presses enter in search bar
-        searchBar.setForeground(Color.BLACK);
+		// Store input
+		String input = searchBar.getText().toLowerCase();
+
+		// Try-block to run method which may throw an exception
+		try
+		{
+			// Call broadSearch method to search for Skis
+			shop.broadSearch(input);
+		}
+		// Catch-block to catch any exceptions and print stack trace
+		catch (Exception anyExceptions)
+		{
+			anyExceptions.printStackTrace();
+		}
 	}
 }

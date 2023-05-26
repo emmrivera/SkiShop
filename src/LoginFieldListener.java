@@ -19,15 +19,17 @@ import java.awt.event.*;                	// For ActionListener interface
 public class LoginFieldListener implements ActionListener
 {
 	private SkiShop shop;						// LoginFieldListener HAS-A Ski Shop to access panels and customer
+	private JButton loginButton;				// LoginFieldListener HAS-A login button
 	private JPanel mainPanel;					// LoginFieldListener HAS-A main panel
 	private JPanel displayPanel;				// LoginFieldListener HAS-A display panel
 	private JTextField loginField;				// LoginFieldListener HAS-A login text field
 	private Customer customer;					// LoginFieldListener HAS-A customer to match or create login credentials
 
 	// Assignment constructor
-	public LoginFieldListener(SkiShop shop, JTextField loginField)
+	public LoginFieldListener(SkiShop shop, JTextField loginField, JButton loginButton)
 	{
 		this.shop = shop;						// Assign Ski Shop
+		this.loginButton = loginButton;			// Assign login button
 		this.loginField = loginField;			// Assign login text field
 		mainPanel = shop.getMainPanel();		// Assign main panel
 		customer = shop.getCustomer();			// Assign customer
@@ -58,6 +60,8 @@ public class LoginFieldListener implements ActionListener
         	displayPanel.add(homeButton);
         	// Add display panel to main panel
         	mainPanel.add(displayPanel, BorderLayout.CENTER);
+        	// Change login button text to Customer's name
+	        loginButton.setText(input);
         }
         // If entry contains a domain name, display greetings message
         else if ((input.contains("@gmail.com")) || (input.contains("@hotmail.com")) || (input.contains("@yahoo.com")))
@@ -77,6 +81,8 @@ public class LoginFieldListener implements ActionListener
         	displayPanel.add(homeButton);
         	// Add display panel to main panel
         	mainPanel.add(displayPanel, BorderLayout.CENTER);
+        	// Change login button text to Customer's name
+	        loginButton.setText(input);
         }
         // If input equals "new"
         else if (input.equals("new"))
@@ -89,9 +95,9 @@ public class LoginFieldListener implements ActionListener
         	// Create text field for user's email
 	        JTextField newLoginField = new JTextField();
 	        // Set the number of columns (desired width)
-	        newLoginField.setColumns(10);
+	        newLoginField.setColumns(20);
 	        // Add Action Listener to text field to retrieve user info based on email given or proceed as a
-	        newLoginField.addActionListener(new NewLoginListener(shop, guestLabel, newLoginField));
+	        newLoginField.addActionListener(new NewLoginListener(shop, guestLabel, newLoginField, loginButton));
         	// Add label to display panel
         	displayPanel.add(guestLabel);
         	// Add text field to display panel

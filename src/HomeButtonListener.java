@@ -44,11 +44,8 @@ public class HomeButtonListener implements ActionListener
         // Assign display panel
         displayPanel = shop.getDisplayPanel();
 
-        // Create button to browse products
-        JLabel browse = new JLabel("To browse our selection of products, " + 
-                                  "click on the \"Menu\" button or use the search bar");
-        // Add button to display panel
-        displayPanel.add(browse);
+        // Add label to display panel
+        displayPanel.add(shop.getHomeLabel());
         // Add panel to main panel
         mainPanel.add(displayPanel, BorderLayout.CENTER);
     }

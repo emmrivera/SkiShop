@@ -29,10 +29,10 @@ public class SkiShop extends JFrame
                    displayPanel,                        // The Ski Shop HAS-A panel for displaying login message, cart, login, etc
                    headerPanel,                         // The Ski Shop HAS-A panel for the header of page
                    searchPanel,                         // The Ski Shop HAS-A panel for searching for Products (within header)
-                   topRightPanel,                       // The Ski Shop HAS-A panel for login and cart options (within header)
-                   featuredPanel;                       // The Ski Shop HAS-A panel for featured products
+                   topRightPanel;                       // The Ski Shop HAS-A panel for login and cart options (within header)
     private JLabel welcomeLabel,                        // The Ski Shop HAS-A label for welcome prompt
-                   titleLabel;                          // The Ski Shop HAS-A label for the title of page
+                   titleLabel,                          // The Ski Shop HAS-A label for the title of page
+                   homeLabel;                           // The Ski Shop HAS-A label for a "home" page label                               
     private JTextArea welcomeTextArea;                  // The Ski Shop HAS-A text area for welcome message
     private JButton menuButton,                         // The Ski Shop HAS-A button for Product menu 
                     searchButton,                       // The Ski Shop HAS-A button for searching for Products
@@ -98,6 +98,8 @@ public class SkiShop extends JFrame
         setTitle(shopName);
         // Create title label
         titleLabel = new JLabel(new ImageIcon("Title.jpg"));
+        // Add Mouse Listener to label to display "home" page
+        titleLabel.addMouseListener(new TitleListener(this));
 
         // Build menu bar
         buildMenuBar();
@@ -109,13 +111,11 @@ public class SkiShop extends JFrame
         buildSearchPanel();
         // Build top right panel for login and cart options (within header)
         buildTopRightPanel();
-        // // Build featured products panel
-        // buildFeaturedPanel();
 
         // Allow program to be exited by clicking on "X"
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Set size of frame
-        setPreferredSize(new Dimension(700, 425));
+        setPreferredSize(new Dimension(700, 450));
         // Pack all panels together to reduce any empty space
         pack();
         // Center frame on screen
@@ -176,13 +176,14 @@ public class SkiShop extends JFrame
         // Set background color white
         displayPanel.setBackground(Color.WHITE);
         // Create welcome label
-        welcomeLabel = new JLabel("\t\t\t\tWelcome to " + shopName + "!");
+        welcomeLabel = new JLabel("Welcome to " + shopName + "!");
         // Center horizontally
         welcomeLabel.setHorizontalAlignment(JLabel.CENTER); 
         // Center vertically
         welcomeLabel.setVerticalAlignment(JLabel.CENTER); 
         // Add label to welcome panel
         displayPanel.add(welcomeLabel, BorderLayout.NORTH);
+
         // Create welcome message
         welcomeTextArea = new JTextArea("Our ski shop is the " +
                             "one-stop shop for all the gear and equipment " +
@@ -199,8 +200,13 @@ public class SkiShop extends JFrame
         welcomeTextArea.setWrapStyleWord(true);
         // Set an empty border for spacing
         welcomeTextArea.setBorder(BorderFactory.createEmptyBorder(30, 30, 50, 30));
+
+        // Create home page label
+        homeLabel = new JLabel("To browse our selection of products, " + 
+                                      "click on the \"Menu\" button or use the search bar");
+
         // Add text area to welcome panel
-        displayPanel.add(welcomeTextArea, BorderLayout.SOUTH);
+        displayPanel.add(welcomeTextArea, BorderLayout.CENTER);
         // Add welcome panel to main panel
         mainPanel.add(displayPanel, BorderLayout.CENTER);
     }
@@ -225,14 +231,24 @@ public class SkiShop extends JFrame
         productMenu = new JPopupMenu();
         // Create Skis menu item
         skisItem = new JMenuItem("Skis");
+        // Add Action Listener to display results for Skis
+        skisItem.addActionListener(new SkisItemListener(this));
         // Create Snowboard menu item
         snowboardItem = new JMenuItem("Snowboard");
+        // Add Action Listener to display results for Snowboard
+        snowboardItem.addActionListener(new SnowboardItemListener(this));
         // Create Boots menu item
         bootsItem = new JMenuItem("Boots");
+        // Add Action Listener to display results for Boots
+        bootsItem.addActionListener(new BootsItemListener(this));
         // Create Bindings menu item
         bindingsItem = new JMenuItem("Bindings");
+        // Add Action Listener to display results for Bindings
+        bindingsItem.addActionListener(new BindingsItemListener(this));
         // Create Poles menu item
         polesItem = new JMenuItem("Poles");
+        // Add Action Listener to display results for Skis
+        polesItem.addActionListener(new PolesItemListener(this));
         // Add Skis menu item to Product popup menu
         productMenu.add(skisItem);
         // Add Snowboard menu item to Product popup menu
@@ -256,8 +272,10 @@ public class SkiShop extends JFrame
         searchBar.setForeground(Color.GRAY); 
         // Display message when mouse hovers over text field
         searchBar.setToolTipText("Enter a product or keyword");
-        // Add Action Listener to search for Products when pressing enter
-        searchBar.addActionListener(new SearchBarListener(searchBar));
+        // Add Mouse Listener to clear placeholder text and set color black when clicked
+        searchBar.addMouseListener(new SearchBarMouseListener(searchBar));
+        // Add Action Listener to search for Products when entering input into search bar
+        searchBar.addActionListener(new SearchBarListener(this, searchBar));
         // Add to search panel
         searchPanel.add(searchBar);
 
@@ -266,7 +284,7 @@ public class SkiShop extends JFrame
         // Display message when mouse hovers over button
         searchButton.setToolTipText("Click to search for product");
         // Add Action Listener to search for Products when clicking on search button
-        searchButton.addActionListener(new SearchButtonListener(searchBar));
+        searchButton.addActionListener(new SearchButtonListener(this, searchBar));
         // Add to search panel
         searchPanel.add(searchButton);
     }
@@ -288,31 +306,16 @@ public class SkiShop extends JFrame
         // Create login button
         loginButton = new JButton("Login");
         // Add Action Listener to display login prompts
-        loginButton.addActionListener(new LoginButtonListener(this));
+        loginButton.addActionListener(new LoginButtonListener(this, loginButton));
         // Add login button to top right panel
         topRightPanel.add(loginButton);
 
         // Create a button for the cart
         cartButton = new JButton("Cart");
         // Add Action Listener to display cart options when clicked
-        cartButton.addActionListener(new CartListener(this));
+        cartButton.addActionListener(new CartButtonListener(this));
         // Add cart button to top right panel
         topRightPanel.add(cartButton);
-    }
-
-    /**
-     * Purpose: build panel to display featured products
-     */
-    public void buildFeaturedPanel()
-    {
-        // Create a panel for the featured products
-        featuredPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        // Set an empty border for spacing
-        featuredPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        // Set background color white
-        featuredPanel.setBackground(Color.WHITE);
-        // Add featured panel to main panel
-        mainPanel.add(featuredPanel, BorderLayout.SOUTH);
     }
 
     /**
@@ -340,6 +343,14 @@ public class SkiShop extends JFrame
     }
 
     /**
+     * Purpose: get home page label
+     */
+    public JLabel getHomeLabel()
+    {
+        return homeLabel;
+    }
+
+    /**
      * Purpose: retrieve Customer
      */
     public Customer getCustomer()
@@ -355,121 +366,25 @@ public class SkiShop extends JFrame
         return cart;
     }
 
-    // /**
-    //  * Purpose: ask user to login / create a new login / or checkout as a guest
-    //  * @throws Exception
-    //  */
-    // public void login() throws Exception
-    // {
-    //     // Create string to ask for login for reuse
-    //     String login = "\nEnter email to login\n(\"new\" to create a new user or " +
-    //                     "\"guest\" to checkout as a guest):";
-
-    //     // Display prompt
-    //     System.out.println(login);
-
-    //     // Ask for user input
-    //     String user = input.nextLine().toLowerCase();
-    //     // If user enters "guest", display greetings message
-    //     if (user.equals("guest"))
-    //     {
-    //         System.out.println("\nGreetings guest!");
-    //         mainMenu();
-    //     }
-    //     // If user enters "new", call createLogin() method
-    //     else if (user.equals("new"))
-    //     {
-    //         createLogin();
-    //         mainMenu();
-    //     }
-    //     // If entry contains a domain name, display greetings message
-    //     else if ((user.contains("@gmail.com")) || (user.contains("@hotmail.com")) || (user.contains("@yahoo.com")))
-    //     {
-    //         System.out.println("\nGreetings " + user + "!");
-    //         mainMenu();
-    //     }
-    //     // Otherwise, if entry doesn't contain any of the above, call login() method to restart
-    //     else 
-    //     {
-    //         login();
-    //     }
-    // }
-
-    // /**
-    //  * Purpose: to create a new login
-    //  */
-    // public void createLogin()
-    // {
-    //     // Display login message
-    //     System.out.println("\nLet's create a new login!");
-    //     // Create string to ask for email for reuse
-    //     String enterEmail = "Enter your email:";
-    //     // Initialize a variable for exiting loop
-    //     int exitLoop = -1;
-    //     // Continue to ask for email if no domain name was entered
-    //     while (exitLoop < 0)
-    //     {
-    //         // Display "enter email" message
-    //         System.out.println(enterEmail);
-    //         // Assign user input to email
-    //         String email = input.nextLine();
-    //         // If input contains an email domain name, increment variable to exit loop
-    //         if ((email.contains("@gmail.com")) || (email.contains("@hotmail.com")) || (email.contains("@yahoo.com")))
-    //         {
-    //             customer.setEmailAddress(email);
-    //             exitLoop++;
-    //         }
-    //     }
-    //     // Ask for first name
-    //     System.out.println("\nEnter your first name:");
-    //     // Set as customer's first name
-    //     customer.setFirstName(input.nextLine());
-    //     // Ask for last name
-    //     System.out.println("\nEnter your last name:");
-    //     // Set as customer's last name
-    //     customer.setLastName(input.nextLine());
-    //     // Ask for shoe size
-    //     System.out.println("\nEnter your shoe size:");
-    //     // Set as customer's shoe size
-    //     customer.setShoeSize(Integer.valueOf(input.nextLine()));
-    //     // Display greetings message
-    //     System.out.println("\nGreetings " + customer.getFirstName() + "!");
-    // }
-
     /**
      * Purpose: start the main menu
      * @throws Exception
      */
     public void mainMenu() throws Exception
     {   
-        // Display prompt asking customer if they know the specific item they're searching for
-        System.out.println("\nMain Menu\nDo you already know the product you want?\n" +
-                            "(Enter a brand, model, keyword, or \"no\" to continue):");
+        // Hide current panel
+        displayPanel.setVisible(false);
+        // Create new Panel
+        JPanel newPanel = new JPanel();
+        // Set background color white
+        newPanel.setBackground(Color.WHITE);
+        // Set new display panel
+        setDisplayPanel(newPanel);
 
-        // Assign input to keyword
-        String keyword = input.nextLine().toLowerCase();
-        // Try block to run searches that may throw exceptions
-        try 
-        {
-            // If input equals "no", continue to advanced search method
-            if (keyword.equals("no"))
-            {
-                advancedSearch();
-            }
-            // Otherwise perform broad item search
-            else
-            {
-                broadSearch(keyword);
-            }
-        }
-        // Catch block to catch any exceptions thrown from search methods
-        catch (Exception anyExceptions)
-        {
-            // Display error message
-            System.out.println("Error finding product, please try again.");
-            // Restart program from main menu
-            mainMenu();
-        }
+        // Add label to display panel
+        displayPanel.add(getHomeLabel());
+        // Add panel to main panel
+        mainPanel.add(displayPanel, BorderLayout.CENTER);
     }
 
     /**
@@ -503,167 +418,167 @@ public class SkiShop extends JFrame
         displayResults(searchResults, fields);
     }
 
-    /**
-     * Purpose: Purpose: specific search using filters (via prompts) 
-     * @throws Exception
-     */
-    public void advancedSearch() throws Exception
-    {   
-        // String for type of product
-        String type = "";
-        // String for desired type
-        String desiredType = "";
-        // Flag for while loop
-        boolean validType = false;
-        // Do-While loop to repeat until input is valid
-        do 
-        {
-            // Narrow search critera based on category of gear
-            System.out.println("\nWhat type of gear are you looking for?\n" +
-                                            Arrays.toString(types).toLowerCase());
-            // Store input
-            type = input.nextLine().toLowerCase();
-            // Check if entry is equal to one of the product types
-            for (String eachType : types)
-            {
-                // If yes, assign true
-                if (type.equals(eachType.toLowerCase()))
-                {
-                    validType = true;
-                    // Assign desired type
-                    desiredType = eachType;
-                }
-            }
-        // Repeat question until a valid type is entered
-        } while (!validType);
+    // /**
+    //  * Purpose: Purpose: specific search using filters (via prompts) 
+    //  * @throws Exception
+    //  */
+    // public void advancedSearch() throws Exception
+    // {   
+    //     // String for type of product
+    //     String type = "";
+    //     // String for desired type
+    //     String desiredType = "";
+    //     // Flag for while loop
+    //     boolean validType = false;
+    //     // Do-While loop to repeat until input is valid
+    //     do 
+    //     {
+    //         // Narrow search critera based on category of gear
+    //         System.out.println("\nWhat type of gear are you looking for?\n" +
+    //                                         Arrays.toString(types).toLowerCase());
+    //         // Store input
+    //         type = input.nextLine().toLowerCase();
+    //         // Check if entry is equal to one of the product types
+    //         for (String eachType : types)
+    //         {
+    //             // If yes, assign true
+    //             if (type.equals(eachType.toLowerCase()))
+    //             {
+    //                 validType = true;
+    //                 // Assign desired type
+    //                 desiredType = eachType;
+    //             }
+    //         }
+    //     // Repeat question until a valid type is entered
+    //     } while (!validType);
 
-        // Narrow search critera based on brand
-        System.out.println("\nDid you have a brand you prefer?\n" +
-                            "(Enter brand or \"all\" to include all brands):");
-        // Store input
-        String brand = input.nextLine().toLowerCase();
+    //     // Narrow search critera based on brand
+    //     System.out.println("\nDid you have a brand you prefer?\n" +
+    //                         "(Enter brand or \"all\" to include all brands):");
+    //     // Store input
+    //     String brand = input.nextLine().toLowerCase();
 
-        // Narrow search critera based on model
-        System.out.println("\nDo you know the model of the product?\n" +
-                            "(Enter model or \"all\" to include all models):");
-        // Store input
-        String model = input.nextLine().toLowerCase();
+    //     // Narrow search critera based on brand
+    //     System.out.println("\nDo you know the model of the product?\n" +
+    //                         "(Enter model or \"all\" to include all models):");
+    //     // Store input
+    //     String model = input.nextLine().toLowerCase();
 
-        // Narrow search critera based on price
-        System.out.println("\nWhat does your budget look like?\n" +
-                            "(Enter max price or 0 to include all prices):");
-        // Store input
-        String budget = input.nextLine().toLowerCase();
+    //     // Narrow search critera based on price
+    //     System.out.println("\nWhat does your budget look like?\n" +
+    //                         "(Enter max price or 0 to include all prices):");
+    //     // Store input
+    //     String budget = input.nextLine().toLowerCase();
 
-        // Narrow search critera based on size
-        System.out.println("\nDo you know your size?\n" +
-                            "(Enter size or 0 to include all sizes):");
-        // Store input
-        String size = input.nextLine().toLowerCase();
+    //     // Narrow search critera based on size
+    //     System.out.println("\nDo you know your size?\n" +
+    //                         "(Enter size or 0 to include all sizes):");
+    //     // Store input
+    //     String size = input.nextLine().toLowerCase();
 
-        // Narrow search critera based on gender-specific gear
-        System.out.println("\nAre you interested in Men's or Women's gear?\n" +
-                            "(Enter \"mens\", \"womens\", or \"all\" to include both):");
-        // Store input
-        String gender = input.nextLine().toLowerCase();
+    //     // Narrow search critera based on gender-specific gear
+    //     System.out.println("\nAre you interested in Men's or Women's gear?\n" +
+    //                         "(Enter \"mens\", \"womens\", or \"all\" to include both):");
+    //     // Store input
+    //     String gender = input.nextLine().toLowerCase();
 
-        // Store all input into an ArrayList of Strings
-        ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(type, brand, model, budget, size, gender));     
+    //     // Store all input into an ArrayList of Strings
+    //     ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(type, brand, model, budget, size, gender));     
 
-        // String for skill level
-        String skillLevel = "";
-        // String for sport
-        String sport = "";
+    //     // String for skill level
+    //     String skillLevel = "";
+    //     // String for sport
+    //     String sport = "";
         
-        // If type equals "skis" or "snowboard", continue
-        if (type.equals("skis") || type.equals("snowboard"))
-        {
-            // Narrow search critera based on riding ability
-            System.out.println("\nWould you consider yourself a beginner, intermediate, or advanced rider?\n" +
-                                "(Enter \"beginner\", \"intermediate\", \"advanced\", or \"all\" to include all):");
-            // Store input
-            skillLevel = input.nextLine().toLowerCase();
-            // Add skill level to ArrayList
-            arrayList.add(skillLevel);
-        }
-        // If type equals "boots" or "bindings", continue
-        else if (type.equals("boots") || type.equals("bindings"))
-        {
-            // Narrow search critera based on sport
-            System.out.println("\nAre you a skier or snowboarder?\n" +
-                                "(Enter \"ski\", \"snowboard\", or \"all\" to include both):");
-            // Store input
-            sport = input.nextLine().toLowerCase();  
-            // Add sport to ArrayList
-            arrayList.add(sport);
-        }
+    //     // If type equals "skis" or "snowboard", continue
+    //     if (type.equals("skis") || type.equals("snowboard"))
+    //     {
+    //         // Narrow search critera based on riding ability
+    //         System.out.println("\nWould you consider yourself a beginner, intermediate, or advanced rider?\n" +
+    //                             "(Enter \"beginner\", \"intermediate\", \"advanced\", or \"all\" to include all):");
+    //         // Store input
+    //         skillLevel = input.nextLine().toLowerCase();
+    //         // Add skill level to ArrayList
+    //         arrayList.add(skillLevel);
+    //     }
+    //     // If type equals "boots" or "bindings", continue
+    //     else if (type.equals("boots") || type.equals("bindings"))
+    //     {
+    //         // Narrow search critera based on sport
+    //         System.out.println("\nAre you a skier or snowboarder?\n" +
+    //                             "(Enter \"ski\", \"snowboard\", or \"all\" to include both):");
+    //         // Store input
+    //         sport = input.nextLine().toLowerCase();  
+    //         // Add sport to ArrayList
+    //         arrayList.add(sport);
+    //     }
 
-        // Create a String array to copy fields from ArrayList to
-        String[] fields = new String[arrayList.size()];
-        // For loop to copy ArrayList to String array
-        for (int i = 0; i < arrayList.size(); i++)
-        {
-            // Assign field
-            fields[i] = arrayList.get(i);
-        }
+    //     // Create a String array to copy fields from ArrayList to
+    //     String[] fields = new String[arrayList.size()];
+    //     // For loop to copy ArrayList to String array
+    //     for (int i = 0; i < arrayList.size(); i++)
+    //     {
+    //         // Assign field
+    //         fields[i] = arrayList.get(i);
+    //     }
 
-        // Create a cart for results
-        Cart cart = new Cart();
-        // Create a product array to hold list of all products based on type
-        Product[] array = scanInventory(desiredType, "").getProducts();  
-        // Iterate through each product in array
-        for (Product product : array)
-        {
-            // If the brand of product equals input, continue
-            if (product.getBrand().toLowerCase().equals(brand) || brand.equals("all"))
-            {   
-                // If the model of product equals input, continue
-                if (product.getModel().toLowerCase().equals(model) || model.equals("all"))
-                { 
-                    // If the price of product is less than input or input is 0, continue
-                    if (product.getPrice() < Double.valueOf(budget) || Double.valueOf(budget) == 0)
-                    {
-                        // If the size of product equals input or input is 0, continue
-                        if (product.getSize() == Integer.valueOf(size) || Integer.valueOf(size) == 0)
-                        {
-                            // If the gender of product equals input or input is "all", continue
-                            if (product.getGender().toLowerCase().equals(gender) || product.getGender().equals("Unisex") || gender.equals("all"))
-                            {
-                                // If type equals "skis" or "snowboard", continue
-                                if (type.equals("skis") || type.equals("snowboard"))
-                                {
-                                    // If the skill level of product equals input or input is "all", continue
-                                    if (product.getSkillLevel().toLowerCase().equals(skillLevel) || skillLevel.equals("all"))
-                                    {
-                                        // If all fields are met, add product to cart
-                                        cart.addToCart(product);
-                                    }
-                                }
-                                // If type equals "boots" or "bindings", continue
-                                else if (type.equals("boots") || type.equals("bindings"))
-                                {
-                                    // If the sport equals input or input is "all", continue
-                                    if (product.getSport().toLowerCase().equals(sport) || product.getSport().equals("Unisex") || sport.equals("all"))
-                                    {
-                                        // If all fields are met, add product to cart
-                                        cart.addToCart(product);
-                                    }   
-                                }
-                                // Otherwise, if the type is none of those above
-                                else 
-                                {
-                                    // If all fields are met, add product to cart
-                                    cart.addToCart(product);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        // Display results
-        displayResults(cart, fields);
-    }
+    //     // Create a cart for results
+    //     Cart cart = new Cart();
+    //     // Create a product array to hold list of all products based on type
+    //     Product[] array = scanInventory(desiredType, "").getProducts();  
+    //     // Iterate through each product in array
+    //     for (Product product : array)
+    //     {
+    //         // If the brand of product equals input, continue
+    //         if (product.getBrand().toLowerCase().equals(brand) || brand.equals("all"))
+    //         {   
+    //             // If the model of product equals input, continue
+    //             if (product.getModel().toLowerCase().equals(model) || model.equals("all"))
+    //             { 
+    //                 // If the price of product is less than input or input is 0, continue
+    //                 if (product.getPrice() < Double.valueOf(budget) || Double.valueOf(budget) == 0)
+    //                 {
+    //                     // If the size of product equals input or input is 0, continue
+    //                     if (product.getSize() == Integer.valueOf(size) || Integer.valueOf(size) == 0)
+    //                     {
+    //                         // If the gender of product equals input or input is "all", continue
+    //                         if (product.getGender().toLowerCase().equals(gender) || product.getGender().equals("Unisex") || gender.equals("all"))
+    //                         {
+    //                             // If type equals "skis" or "snowboard", continue
+    //                             if (type.equals("skis") || type.equals("snowboard"))
+    //                             {
+    //                                 // If the skill level of product equals input or input is "all", continue
+    //                                 if (product.getSkillLevel().toLowerCase().equals(skillLevel) || skillLevel.equals("all"))
+    //                                 {
+    //                                     // If all fields are met, add product to cart
+    //                                     cart.addToCart(product);
+    //                                 }
+    //                             }
+    //                             // If type equals "boots" or "bindings", continue
+    //                             else if (type.equals("boots") || type.equals("bindings"))
+    //                             {
+    //                                 // If the sport equals input or input is "all", continue
+    //                                 if (product.getSport().toLowerCase().equals(sport) || product.getSport().equals("Unisex") || sport.equals("all"))
+    //                                 {
+    //                                     // If all fields are met, add product to cart
+    //                                     cart.addToCart(product);
+    //                                 }   
+    //                             }
+    //                             // Otherwise, if the type is none of those above
+    //                             else 
+    //                             {
+    //                                 // If all fields are met, add product to cart
+    //                                 cart.addToCart(product);
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     // Display results
+    //     displayResults(cart, fields);
+    // }
 
     /**
      * Purpose: scan through inventory
@@ -714,12 +629,13 @@ public class SkiShop extends JFrame
         // Catch block if an exception was thrown during I/O operations
         catch (IOException exception) 
         {
+            exception.printStackTrace();
             // Display the exception that was thrown
             System.out.println("Sorry, inventory file not found");
         }
         // Finally block to always close access to file
         finally 
-        {
+        {   
             if (inputFile != null)
             {
                 // Close Scanner
@@ -740,37 +656,78 @@ public class SkiShop extends JFrame
         searchResults.getModels();
         // Initialize a count variable with quantity of different models in cart 
         int count = searchResults.getModelCount();
+
+        // Hide current panel
+        displayPanel.setVisible(false);
+        // Create new Panel
+        JPanel newPanel = new JPanel(new BorderLayout());
+        // Set background color white
+        newPanel.setBackground(Color.WHITE);
+        // Set new display panel
+        setDisplayPanel(newPanel);
+
         // If at least 1 product found, display results
         if (count > 0)
         {
-            // Display number of results
-            System.out.println("\nWe found " + count + " result(s) for " + Arrays.toString(fields) + ":\n");
-            // Display search results
-            System.out.print(searchResults);
-            // Display prompt asking if interested in products
-            System.out.println("\nAre you interested in any of these products?\n" + 
-                            "(Enter \"yes\" or \"no\"):");
-            // Assign input
-            String interested = input.nextLine().toLowerCase();
-            // If input is "yes", add the product to cart, checkout, or continue shopping
-            if (interested.equals("yes") || interested.equals("y"))
-            {
-                // Call interested() method for next step
-                interested(searchResults);
-            }
-            // If the input wasn't "yes" (customer not interested in any of the products in the search results), then call method to return to main menu 
-            else 
-            {
-                startOver();
-            }
+            // Create label to display number of results
+            JLabel resultsLabel = new JLabel("\nWe found " + count + " result(s) for " + Arrays.toString(fields) + ":\n");
+            // Center label
+            resultsLabel.setVerticalAlignment(JLabel.CENTER);
+            resultsLabel.setHorizontalAlignment(JLabel.CENTER);
+            // Add label to display panel
+            displayPanel.add(resultsLabel, BorderLayout.NORTH);
+
+            // Create text area to display search results 
+            JTextArea resultsTextArea = new JTextArea(searchResults.toString());
+            // Restrict editing
+            resultsTextArea.setEditable(false);
+            // Wrap sentences to next line
+            resultsTextArea.setLineWrap(true);
+            // Wrap entire words to next line
+            resultsTextArea.setWrapStyleWord(true);
+
+            // Create scroll bar for the text area (search results)
+            JScrollPane scrollBar = new JScrollPane(resultsTextArea);
+            // Set an empty border for spacing
+            scrollBar.setBorder(BorderFactory.createEmptyBorder(30, 30, 50, 30));
+            // Add text area to display panel
+            displayPanel.add(scrollBar, BorderLayout.CENTER);
+
+            // Create panel to to prompt if Customer is interested
+            JPanel interestedPanel = new JPanel();
+            // Set background color white
+            interestedPanel.setBackground(Color.WHITE);
+
+            // Create label to display prompt asking if interested in products
+            JLabel interestedLabel = new JLabel("Are you interested in any of these products?");
+            // Add label to interested panel
+            interestedPanel.add(interestedLabel);
+
+            // Create text field for user input
+            JTextField interestedField = new JTextField("Enter yes or no");
+            // Set the number of columns (desired width)
+            interestedField.setColumns(10);
+            // Set the text color for the placeholder
+            interestedField.setForeground(Color.GRAY); 
+            // Add Mouse Listener to clear text when clicked
+            interestedField.addMouseListener(new InterestedFieldMouseListener(interestedField));
+            // Add Action Listener to search for Products when pressing enter
+            interestedField.addActionListener(new InterestedFieldListener(this, interestedField, interestedPanel, searchResults));
+            // Add text field to interested panel
+            interestedPanel.add(interestedField);
+
+            // Add interested panel to display panel
+            displayPanel.add(interestedPanel, BorderLayout.SOUTH);
+            // Add display panel to main panel
+            mainPanel.add(displayPanel, BorderLayout.CENTER);
         }
         // Otherwise, display no results found
         else 
         {
             // Display number of results
             System.out.println("\nWe found no results:\n");
-            // Call startOver() to return to main menu
-            startOver();
+            // Return to main menu
+            mainMenu();
         }
     }
 
@@ -778,251 +735,200 @@ public class SkiShop extends JFrame
      * Purpose: determine if customer would like to add any items to cart
      * @throws Exception
      */
-    public void interested(Cart searchResults) throws Exception
+    public void interested(Cart searchResults, int itemNumber) throws Exception
     {
-        // Initialize a variable for exiting the while loop
-        int exitLoop = -1;
-        // Initialize an integer for input
-        int itemNumber = -1;
-        // Repeat prompt asking for desired selection if input invalid
-        while (exitLoop < 0)
+        // Get model count
+        int modelCount = searchResults.getModelCount();
+        // Initialize a boolean variable for checking if the product is in the search results
+        boolean itemInSearchResults = false;
+        // If selection is within the search results, assign true
+        if ((itemNumber > 0) && (itemNumber <= modelCount))
         {   
-            // Declare a boolean for while loop
-            boolean validItemNumber = false;
-            // Do-while loop to continue asking for input if invalid
-            do
-            {
-                // Try-Block to handle exceptions thrown from invalid input
-                try 
-                {
-                    // Display prompt to ask for desired item or if customer would like to proceed to checkout or continue shopping
-                    System.out.println("\nEnter your desired selection\n" +
-                            "(Enter Item #):");
-                    // Store input
-                    itemNumber = input.nextInt();
-                    // Assign true to valid input
-                    validItemNumber = true;
+            // Assign true
+            itemInSearchResults = true;
+        }
+        // Assign desired selection (based on item number / model index) to a Product array
+        Product[] modelArray = searchResults.getSpecificModel(itemNumber);
+        // Create text field for user input
+        JTextField sizeField = null;
+        // If desired item is within the search results list, continue
+        if (itemInSearchResults)
+        { 
+            // Hide display panel
+            displayPanel.setVisible(false);
+            // Create new Panel
+            JPanel newPanel = new JPanel(new BorderLayout());
+            // Set background color white
+            newPanel.setBackground(Color.WHITE);
+            // Set new display panel
+            setDisplayPanel(newPanel);
+            // Unhide display panel
+            displayPanel.setVisible(true);
+            // Add to main panel
+            mainPanel.add(displayPanel, BorderLayout.CENTER);
 
-                }
-                // Catch any exceptions from invalid input and display prompt
-                catch (InputMismatchException exception)
-                {
-                    // Display prompt to ask customer to re-enter correct input
-                    System.out.println("\nInvalid entry type, please enter an integer.\n");
-                    // Clear buffer (prevents infinite loop)
-                    input.nextLine();
-                }
-            } while (!validItemNumber);
-            // Consume next line character
-            input.nextLine();
-            // Get model count
-            int modelCount = searchResults.getModelCount();
-            // Initialize a boolean variable for checking if the product is in the search results
-            boolean itemInSearchResults = false;
-            // If selection is within the search results, assign true
-            if ((itemNumber > 0) && (itemNumber <= modelCount))
-            {   
-                // Assign true
-                itemInSearchResults = true;
-            }
-            // Assign desired selection (based on item number / model index) to a Product array
-            Product[] modelArray = searchResults.getSpecificModel(itemNumber);
-            // If desired item is within the search results list, continue
-            if (itemInSearchResults)
-            { 
-                // Display product description and available sizes
-                System.out.println(searchResults.getModelDescription(modelArray));
-                // Declare integer to store input
-                int desiredSize = -1;
-                // Declare a boolean for while loop
-                boolean validSize = false;
-                // Get array of available product sizes
-                int[] productSizes = searchResults.getProductSizes();
-                // Initialize a boolean variable for checking if the size of product is available
-                boolean sizeAvailable = false;
-                // Create an integer to store index of desired size
-                int desiredIndex = -1;
-                // Do-while loop to continue asking for input if invalid
-                do
-                {
-                    // Try-Block to handle exceptions thrown from invalid input
-                    try 
-                    {
-                        // Display prompt asking customer which size they would like
-                        System.out.println("Which size would you like?\n(Enter available size):");
-                        // Store input
-                        desiredSize = input.nextInt();
-                        // Assign true to valid input
-                        validSize = true;
-                        // Iterate through each available size
-                        for (int size = 0; size < productSizes.length; size++)
-                        {   
-                            // If size is available, assign true
-                            if (desiredSize == productSizes[size])
-                            {
-                                // Store index associated with desired size for next step
-                                desiredIndex = size;
-                                // Assign true
-                                sizeAvailable = true;
-                            }
-                        }
-                        // If size is not available, display message
-                        if (!sizeAvailable)
-                        {
-                            // Display message
-                            System.out.println("\nSize not available, please try again.\n");
-                        }
-                    }
-                    // Catch any exceptions from invalid input and display prompt
-                    catch (InputMismatchException exception)
-                    {
-                        // Display prompt to ask customer to re-enter correct input
-                        System.out.println("\nInvalid entry type, please enter an integer.\n");
-                        // Clear buffer (prevents infinite loop)
-                        input.nextLine();
-                    }
-                // Repeat loop while entry type or size is not valid
-                } while (!validSize || !sizeAvailable);
-                // Declare integer to store input
-                int quantity = -1;
-                // Declare a boolean for while loop
-                boolean validQuantity = false;
-                // Initialize a boolean variable for checking if the quantity of product is available
-                boolean quantityAvailable = false;
-                // Get 2D array of Products (based on size)
-                Product[][] multiSizes = searchResults.getMultiSizes();
-                // Do-while loop to continue asking for input if invalid
-                do
-                {
-                    // Try-Block to handle exceptions thrown from invalid input
-                    try 
-                    {
-                        // Display prompt asking customer for desired quantity
-                        System.out.println("\nHow many do you want?\n(Enter desired quantity):");
-                        // Store input
-                        quantity = input.nextInt();
-                        // Assign true
-                        validQuantity = true;
-                        // If quantity of desired size is available (by checking associated product array length), assign true
-                        if (quantity > 0 && quantity <= multiSizes[desiredIndex].length)
-                        {   
-                            // Assign true
-                            quantityAvailable = true;
-                        }
-                        if (!quantityAvailable)
-                        {
-                            // Display error message
-                            System.out.println("\nInvalid quantity entered, please try again.");
-                        }
-                    }
-                    // Catch any exceptions from invalid input and display prompt
-                    catch (InputMismatchException exception)
-                    {
-                        // Display prompt to ask customer to re-enter correct input
-                        System.out.println("\nInvalid entry type, please enter an integer.\n");
-                    }
-                } while (!validQuantity || !quantityAvailable);
-                // Consume next line character
-                input.nextLine();
-                // Display prompt asking customer if they would like to add product to cart
-                System.out.println("\nWould you like to add to cart?\n(Enter \"yes\" or \"no\"):");
-                // Assign input
-                String addToCart = input.nextLine().toLowerCase();
-                // If input equals "yes", continue
-                if (addToCart.equals("yes"))
-                {
-                    // Iterate through each product in array associated with desired size (based on desired quantity)
-                    for (int product = 0; product < quantity; product++)
-                    {
-                        // Initialize a boolean variable for checking if the product is already in the cart to prevent duplicates
-                        boolean alreadyInCart = cart.contains(multiSizes[desiredIndex][product]);
-                        // If the item is not in the cart, continue
-                        if (!alreadyInCart)
-                        {  
-                            // Add product to cart
-                            cart.addToCart(multiSizes[desiredIndex][product]);
-                            // Remove product from search results
-                            searchResults.removeFromCart(multiSizes[desiredIndex][product]);
-                            // Remove product from inventory
-                            multiSizes[desiredIndex][product].removeFromInventory(multiSizes[desiredIndex][product]);
-                            // Display Product String
-                            System.out.println("\n" + multiSizes[desiredIndex][product].toString() + "added to cart!");
-                        }
-                        // If item was already in the cart, display prompt
-                        else 
-                        {
-                            // Display that the selected item was already in the cart
-                            System.out.println("\nThe item you've selected is already in the cart.");
-                        }
-                    }
-                    // If there are no more search results, display next prompt and exit loop
-                    if (searchResults.getQuantity() < 1)
-                    {
-                        // Display prompt asking if customer would like to proceed to checkout or continue shopping
-                        proceed();
-                        // Exit loop if no more products remain
-                        exitLoop++;
-                    }
-                    // If there are still more items in the search results that can be added to cart, display next prompt
-                    else 
-                    {
-                        // Display prompt asking if customer would like to select more products
-                        System.out.println("\nWould you like to select more products?\n" +
-                                        "(Enter \"yes\" or \"no\"):");
-                        // Assign input to a String
-                        String selectMore = input.nextLine().toLowerCase();
-                        // If input is "no", exit loop and call checkout() method
-                        if (selectMore.equals("no"))
-                        {
-                            // Display prompt asking if customer would like to proceed to checkout or continue shopping
-                            proceed();
-                            // Exit loop if no more products remain
-                            exitLoop++;
-                        }
-                    }
-                }
-                // Otherwise, return to main menu
-                else 
-                {
-                    // Display prompt asking if customer would like to proceed to checkout or continue shopping
-                    proceed();
-                    // Exit loop if no more products remain
-                    exitLoop++;
-                }
-            }
-            // If the item number entered isn't equal to any of the item numbers in the search results, display prompt
-            else 
-            {
-                // Display "invalid number entered" message
-                System.out.println("\nItem not found in search results. Please try again.");
-            }
+            // Create text area to display search results 
+            JTextArea productTextArea = new JTextArea(searchResults.getModelDescription(modelArray));
+            // Restrict editing
+            productTextArea.setEditable(false);
+            // Wrap sentences to next line
+            productTextArea.setLineWrap(true);
+            // Wrap entire words to next line
+            productTextArea.setWrapStyleWord(true);
+
+            // Create scroll bar for the text area (search results)
+            JScrollPane scrollBar = new JScrollPane(productTextArea);
+            // Set an empty border for spacing
+            scrollBar.setBorder(BorderFactory.createEmptyBorder(30, 30, 50, 30));
+            // Add text area to display panel
+            displayPanel.add(scrollBar, BorderLayout.CENTER);
+
+            // Create lower panel for prompt/user input
+            JPanel promptPanel = new JPanel();
+            // Set background color white
+            promptPanel.setBackground(Color.WHITE);
+            // Add panel to display panel
+            displayPanel.add(promptPanel, BorderLayout.SOUTH);
+
+            // Create label to prompt Customer for desired size
+            JLabel sizeLabel = new JLabel("Which size would you like?");
+            // Add label to prompt panel
+            promptPanel.add(sizeLabel);
+
+            // Create text field for user input
+            sizeField = new JTextField("Enter available size");
+            // Set the number of columns (desired width)
+            sizeField.setColumns(10);
+            // Set the text color for the placeholder
+            sizeField.setForeground(Color.GRAY); 
+            // Add Mouse Listener to clear text when clicked
+            sizeField.addMouseListener(new SizeFieldMouseListener(sizeField));
+            // Add Action Listener to select desired size
+            sizeField.addActionListener(new SizeFieldListener(this, sizeField, promptPanel, searchResults));
+            // Add text field to size panel
+            promptPanel.add(sizeField);
+        }
+        // If the item number entered isn't equal to any of the item numbers in the search results, display prompt
+        else 
+        {
+            // Display "invalid number entered" message
+            sizeField.setText("Item not found in search results. Please try again.");
         }
     }
 
     /**
-     * Purpose: determine if customer would like to start over and repeat search
+     * Purpose: determine the amount the customer would like to add to cart
      * @throws Exception
      */
-    public void startOver() throws Exception
+    public void getDesiredQuantity(Cart searchResults, int desiredIndex, JPanel promptPanel) throws Exception
     {
-        // Display prompt asking if customer would like to return to main menu
-        System.out.println("\nWould you like to start over?\n" +
-                            "(Enter \"yes\" or \"no\"):");
-        // Assign input to a String
-        String repeat = input.nextLine().toLowerCase();
-        // If input is "yes", then return to main menu
-        if (repeat.equals("yes"))
-        {
-            mainMenu();
-        }
-        // Otherwise, proceed to checkout
-        else 
-        {
-            checkout();
-        }
+        // Hide prompt panel
+        promptPanel.setVisible(false);
+        // Create new Panel
+        JPanel newPanel = new JPanel();
+        // Set background color white
+        newPanel.setBackground(Color.WHITE);
+        // Add to display panel
+        displayPanel.add(newPanel, BorderLayout.SOUTH);
+
+        // Create label to display prompt asking customer for desired quantity
+        JLabel quantityLabel = new JLabel("How many do you want?");
+        // Add label to panel
+        newPanel.add(quantityLabel);
+
+        // Create text field for user input
+        JTextField quantityField = new JTextField("Enter desired quantity");
+        // Set the number of columns (desired width)
+        quantityField.setColumns(10);
+        // Set the text color for the placeholder
+        quantityField.setForeground(Color.GRAY); 
+        // Add Mouse Listener to clear text when clicked
+        quantityField.addMouseListener(new QuantityFieldMouseListener(quantityField));
+        // Add Action Listener to select desired quantity
+        quantityField.addActionListener(new QuantityFieldListener(this, quantityField, newPanel, searchResults, desiredIndex));
+        // Add text field to quantity panel
+        newPanel.add(quantityField);
     }
 
-     /**
+    /**
+     * Purpose: determine if the customer would like to add product to cart
+     * @throws Exception
+     */
+    public void addToCart(Cart searchResults, Product[][] multiSizes, int quantity, int desiredIndex, JPanel promptPanel) throws Exception
+    {
+        // Hide prompt panel
+        promptPanel.setVisible(false);
+        // Create new Panel
+        JPanel newPanel = new JPanel();
+        // Set background color white
+        newPanel.setBackground(Color.WHITE);
+        // Add to display panel
+        displayPanel.add(newPanel, BorderLayout.SOUTH);
+        
+        // Create label to display prompt asking customer if they would like to add product to cart
+        JLabel cartLabel = new JLabel("Would you like to add to cart?");
+        // Add label to panel
+        newPanel.add(cartLabel);
+
+        // Create text field for user input
+        JTextField cartField = new JTextField("Enter yes or no");
+        // Set the number of columns (desired width)
+        cartField.setColumns(10);
+        // Set the text color for the placeholder
+        cartField.setForeground(Color.GRAY); 
+        // Add Mouse Listener to clear text when clicked
+        cartField.addMouseListener(new CartFieldMouseListener(cartField));
+        // Add Action Listener to select desired cart
+        cartField.addActionListener(new CartFieldListener(this, searchResults, cartField, quantity, multiSizes, desiredIndex, newPanel));
+        // Add text field to cart panel
+        newPanel.add(cartField);
+    }
+
+    /**
+     * Purpose: prompt to ask if customer would like to proceed to checkout or continue shopping
+     * @throws Exception
+     */
+    public void proceed(JPanel promptPanel) throws Exception
+    {
+        // Hide prompt panel
+        promptPanel.setVisible(false);
+        // Create new Panel
+        JPanel newPanel = new JPanel();
+        // Set background color white
+        newPanel.setBackground(Color.WHITE);
+        // Add to display panel
+        displayPanel.add(newPanel, BorderLayout.SOUTH);
+
+        // Create label to display prompt asking if customer would like to checkout or continue shopping
+        JLabel cartLabel = new JLabel("Would you like to proceed to checkout or continue shopping?");
+        // Add label to panel
+        newPanel.add(cartLabel);
+
+        // Create text field for user input
+        JTextField proceedField = new JTextField("Enter checkout or shop");
+        // Set the number of columns (desired width)
+        proceedField.setColumns(10);
+        // Set the text color for the placeholder
+        proceedField.setForeground(Color.GRAY); 
+        // Add Mouse Listener to clear text when clicked
+        proceedField.addMouseListener(new ProceedFieldMouseListener(proceedField));
+        // Add Action Listener to select desired proceed
+        proceedField.addActionListener(new ProceedFieldListener(this, proceedField));
+        // Add text field to proceed panel
+        newPanel.add(proceedField);
+    }
+
+    /**
+     * Purpose: checkout function to display products in cart and proceed to purchase if desired
+     * @throws Exception
+     */
+    public void checkout() throws Exception
+    {   
+        // Click cart button to display products in cart
+        cartButton.doClick();
+    }
+
+    /**
      * Purpose: create a product based on type entered
      * @param fields each attribute to pass into Product constructors (retrieved from Inventory file)
      * @param type the type of product (Snowboard/Skis/etc)
@@ -1069,49 +975,6 @@ public class SkiShop extends JFrame
         else
         {
             return null;
-        }
-    }
-
-    /**
-     * Purpose: prompt to ask if customer would like to proceed to checkout or continue shopping
-     * @throws Exception
-     */
-    public void proceed() throws Exception
-    {
-        // Display prompt asking if customer would like to checkout or continue shopping
-        System.out.println("\nWould you like to proceed to checkout or continue shopping?\n" + 
-                                "(Enter \"checkout\" or \"shop\"):");
-        // Assign input to a String
-        String proceed = input.nextLine().toLowerCase();
-        // If input is "checkout", exit loop and proceed to checkout
-        if (proceed.equals("checkout"))
-        {
-            checkout();
-        }
-        // Otherwise, exit loop and return to main menu
-        else 
-        {
-            mainMenu();
-        }
-    }
-
-    /**
-     * Purpose: checkout function to display products in cart and proceed to purchase if desired
-     * @throws Exception
-     */
-    public void checkout() throws Exception
-    {   
-        if (cart.getQuantity() > 0)
-        {
-            // Display prompt
-            System.out.println("\nHere are the product(s) in your cart: [Quantity: " + cart.getQuantity() + "]");
-            // Display products
-            System.out.print(cart);
-        }
-        else 
-        {
-            // Display prompt
-            System.out.println("\nYou have 0 products in your cart.");
         }
     }
 }

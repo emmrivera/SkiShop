@@ -1,6 +1,6 @@
-import javax.swing.*;                   		// For creating GUIs and its graphical components 
-import java.awt.*;              				// For communicating to Operating System with GUIs
-import java.awt.event.*;                		// For ActionListener interface
+import javax.swing.*;                       // For creating GUIs and its graphical components 
+import java.awt.*;                          // For communicating to Operating System with GUIs
+import java.awt.event.*;                    // For ActionListener interface
 
 /**
  * Lead Author(s):
@@ -18,24 +18,26 @@ import java.awt.event.*;                		// For ActionListener interface
 
 public class LoginButtonListener implements ActionListener
 {
-	private SkiShop shop;						// LoginButtonListener HAS-A Ski Shop to access panels and customer
-	private JPanel mainPanel;					// LoginButtonListener HAS-A main panel for display panel
-	private JPanel displayPanel;				// LoginButtonListener HAS-A panel to display components
-	private Customer customer;					// LoginButtonListener HAS-A customer to match or create login credentials
+    private SkiShop shop;                   // LoginButtonListener HAS-A Ski Shop to access panels and customer
+    private JButton loginButton;            // LoginButtonListener HAS-A login button
+    private JPanel mainPanel;               // LoginButtonListener HAS-A main panel for display panel
+    private JPanel displayPanel;            // LoginButtonListener HAS-A panel to display components
+    private Customer customer;              // LoginButtonListener HAS-A customer to match or create login credentials
 
-	// Assignment constructor
-	public LoginButtonListener(SkiShop shop)
-	{
-		this.shop = shop;						// Assign Ski Shop
-		mainPanel = shop.getMainPanel();		// Assign main panel
-		customer = shop.getCustomer();			// Assign customer
-	}
+    // Assignment constructor
+    public LoginButtonListener(SkiShop shop, JButton loginButton)
+    {
+    	this.shop = shop;                  // Assign Ski Shop
+        this.loginButton = loginButton;    // Assign login button
+    	mainPanel = shop.getMainPanel();   // Assign main panel
+    	customer = shop.getCustomer();     // Assign customer
+    }
 
-	// Required method to override which performs action when clicked
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		// Hide current display panel
+    // Required method to override which performs action when clicked
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+    	// Hide current display panel
         shop.getDisplayPanel().setVisible(false);
         // Create new Panel
         JPanel newPanel = new JPanel();
@@ -47,8 +49,7 @@ public class LoginButtonListener implements ActionListener
         displayPanel = shop.getDisplayPanel();
 
         // Create login label
-        JLabel loginLabel = new JLabel("\nEnter email to login\n(\"new\" to create a new user or " +
-                        "\"guest\" to checkout as a guest):");
+        JLabel loginLabel = new JLabel("\nEnter email to login");
         // Center horizontally
         loginLabel.setHorizontalAlignment(JLabel.CENTER); 
         // Center vertically
@@ -57,15 +58,19 @@ public class LoginButtonListener implements ActionListener
         displayPanel.add(loginLabel);
 
         // Create text field for user's email
-        JTextField loginField = new JTextField();
+        JTextField loginField = new JTextField("\"new\" to create a new user or \"guest\"");
         // Set the number of columns (desired width)
-        loginField.setColumns(10);
+        loginField.setColumns(20);
+        // Set placeholder text color gray
+        loginField.setForeground(Color.GRAY);
+        // Add Mouse Listener to clear placeholder text when clicked
+        loginField.addMouseListener(new LoginFieldMouseListener(loginField));
         // Add Action Listener to text field to retrieve user info based on email given or proceed as a
-        loginField.addActionListener(new LoginFieldListener(shop, loginField));
+        loginField.addActionListener(new LoginFieldListener(shop, loginField, loginButton));
         
         // Add text field to panel
         displayPanel.add(loginField);
         // Add display panel to main panel
         mainPanel.add(displayPanel, BorderLayout.CENTER);
-	}
+    }
 }

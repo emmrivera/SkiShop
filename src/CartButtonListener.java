@@ -16,14 +16,14 @@ import java.awt.event.*;                		// For ActionListener interface
  * Displays products in cart
  */
 
-public class CartListener implements ActionListener
+public class CartButtonListener implements ActionListener
 {
-	private SkiShop shop;						// CartListener HAS-A Ski Shop to access panels and cart
-	private JPanel mainPanel;					// CartListener HAS-A main panel
-	private JPanel displayPanel;				// CartListener HAS-A display panel
-	private Cart cart;							// CartListener HAS-A cart	
+	private SkiShop shop;						// CartButtonListener HAS-A Ski Shop to access panels and cart
+	private JPanel mainPanel;					// CartButtonListener HAS-A main panel
+	private JPanel displayPanel;				// CartButtonListener HAS-A display panel
+	private Cart cart;							// CartButtonListener HAS-A cart	
 
-	public CartListener(SkiShop shop)
+	public CartButtonListener(SkiShop shop)
 	{
 		this.shop = shop;						// Assign Ski Shop
 		mainPanel = shop.getMainPanel();		// Assign main panel
@@ -50,7 +50,7 @@ public class CartListener implements ActionListener
 			// Create label to display message
 	        JLabel messageLabel = new JLabel("Here are the product(s) in your cart: [Quantity: " 
 	        							+ cart.getQuantity() + "]");
-	        // Add button to display panel
+	        // Add label to display panel
 	        displayPanel.add(messageLabel, BorderLayout.NORTH);
 	        // Create label to display products
 	        JLabel products = new JLabel(cart.toString());
