@@ -35,7 +35,8 @@ public class SkiShop extends JFrame
     private JButton menuButton,                         // The Ski Shop HAS-A button for Product menu 
                     searchButton,                       // The Ski Shop HAS-A button for searching for Products
                     loginButton,                        // The Ski Shop HAS-A button for login options
-                    cartButton;                         // The Ski Shop HAS-A button for cart options
+                    cartButton,                         // The Ski Shop HAS-A button for cart options
+                    homeButton;                         // The Ski Shop HAS-A button for returning to "home" page
     private JMenuBar menuBar;                           // The Ski Shop HAS-A menu bar       
     private JMenu fileMenu;                             // The Ski Shop HAS-A file menu
     private JPopupMenu productMenu;                     // The Ski Shop HAS-A popup menu for Product types
@@ -113,7 +114,7 @@ public class SkiShop extends JFrame
         // Allow program to be exited by clicking on "X"
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Set size of frame
-        setPreferredSize(new Dimension(700, 450));
+        setPreferredSize(new Dimension(800, 500));
         // Pack all panels together to reduce any empty space
         pack();
         // Center frame on screen
@@ -184,7 +185,7 @@ public class SkiShop extends JFrame
         // Add label to welcome panel
         displayPanel.add(welcomeLabel, BorderLayout.NORTH);
         // Set an empty border for spacing
-        displayPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+        displayPanel.setBorder(BorderFactory.createEmptyBorder(50, 30, 30, 30));
 
         // Create welcome message
         welcomeTextArea = new JTextArea("Our ski shop is the " +
@@ -205,14 +206,19 @@ public class SkiShop extends JFrame
         // Set an empty border for spacing
         welcomeTextArea.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
-        // Create home page label
-        homeLabel = new JLabel("To browse our selection of products, " + 
-                                      "click on the \"Menu\" button or use the search bar");
-
         // Add text area to welcome panel
         displayPanel.add(welcomeTextArea, BorderLayout.CENTER);
         // Add welcome panel to main panel
         mainPanel.add(displayPanel, BorderLayout.CENTER);
+
+
+        // Create home page label
+        homeLabel = new JLabel("To browse our selection of products, " + 
+                                      "click on the \"Menu\" button or use the search bar");
+        // Create back to home button
+        homeButton = new JButton("Back to Home");
+        // Add Action Listener to return to home page
+        homeButton.addActionListener(new HomeButtonListener(this));
     }
 
     /**
@@ -368,6 +374,14 @@ public class SkiShop extends JFrame
     public Cart getCart()
     {
         return cart;
+    }
+
+    /**
+     * Purpose: get home button
+     */
+    public JButton getHomeButton()
+    {
+        return homeButton;
     }
 
     /**
@@ -682,6 +696,8 @@ public class SkiShop extends JFrame
             resultsLabel.setHorizontalAlignment(JLabel.CENTER);
             // Add label to display panel
             displayPanel.add(resultsLabel, BorderLayout.NORTH);
+            // Set an empty border for spacing
+            displayPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
             // Create text area to display search results 
             JTextArea resultsTextArea = new JTextArea(searchResults.toString());
@@ -695,7 +711,7 @@ public class SkiShop extends JFrame
             // Create scroll bar for the text area (search results)
             JScrollPane scrollBar = new JScrollPane(resultsTextArea);
             // Set an empty border for spacing
-            scrollBar.setBorder(BorderFactory.createEmptyBorder(30, 30, 50, 30));
+            scrollBar.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
             // Add text area to display panel
             displayPanel.add(scrollBar, BorderLayout.CENTER);
 
@@ -730,8 +746,21 @@ public class SkiShop extends JFrame
         // Otherwise, display no results found
         else 
         {
-            // Return to main menu
-            mainMenu();
+            // Create label to display number of results
+            JLabel resultsLabel = new JLabel("We found " + count + " result(s) for " + Arrays.toString(fields) + ":");
+            // Center label
+            resultsLabel.setVerticalAlignment(JLabel.CENTER);
+            resultsLabel.setHorizontalAlignment(JLabel.CENTER);
+            // Add label to display panel
+            displayPanel.add(resultsLabel, BorderLayout.NORTH);
+            // Set an empty border for spacing
+            displayPanel.setBorder(BorderFactory.createEmptyBorder(70, 30, 30, 30));
+
+            // Add display panel to main panel
+            mainPanel.add(displayPanel, BorderLayout.CENTER);
+
+            // // Return to main menu
+            // mainMenu();
         }
     }
 

@@ -19,35 +19,28 @@ import java.awt.event.*;                	    // For ActionListener interface
 public class TitleListener implements MouseListener
 {
     private SkiShop shop;                       // TitleListener HAS-A Ski Shop to access panels
-    private JPanel mainPanel;                   // TitleListener HAS-A main panel
-    private JPanel displayPanel;                // TitleListener HAS-A main panel          
 
     // Assignment constructor
     public TitleListener(SkiShop shop)
     {
         this.shop = shop;                       // Assign Ski Shop
-        mainPanel = shop.getMainPanel();        // Assign main panel
     }
 
     // Required method to override which performs action when clicked
     @Override
     public void mouseClicked(MouseEvent e) 
     {
-        // Hide current display panel
-        shop.getDisplayPanel().setVisible(false);
-        // Create new Panel
-        JPanel newPanel = new JPanel();
-        // Set background color white
-        newPanel.setBackground(Color.WHITE);
-        // Set new display panel
-        shop.setDisplayPanel(newPanel);
-        // Assign display panel
-        displayPanel = shop.getDisplayPanel();
-
-        // Add label to display panel
-        displayPanel.add(shop.getHomeLabel());
-        // Add panel to main panel
-        mainPanel.add(displayPanel, BorderLayout.CENTER);
+        // Execute method call which might throw exceptions
+        try 
+        {
+            // Call method to go to "home" screen
+            shop.mainMenu();
+        }
+        // Display stack trace if any exceptions are caught
+        catch (Exception anyExceptions)
+        {
+            anyExceptions.printStackTrace();
+        }
     }
 
     @Override

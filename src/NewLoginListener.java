@@ -101,14 +101,10 @@ public class NewLoginListener implements ActionListener
 
 		    	// Display greetings
 	        	guestLabel.setText("Greetings " + customer.getFirstName() + "!");
-		    	// Create back to home button
-	        	JButton homeButton = new JButton("Back to Home");
-	        	// Add Action Listener to return to home page
-	        	homeButton.addActionListener(new HomeButtonListener(shop));
 	            // Add label to display panel
 	        	displayPanel.add(guestLabel);
 	        	// Add button to display panel
-	        	displayPanel.add(homeButton);
+	        	displayPanel.add(shop.getHomeButton());
 	        	// Set an empty border for spacing
         		displayPanel.setBorder(BorderFactory.createEmptyBorder(70, 30, 30, 30));
 	        	// Add display panel to main panel

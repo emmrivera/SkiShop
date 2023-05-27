@@ -50,14 +50,12 @@ public class LoginFieldListener implements ActionListener
 
         	// Create greetings label
         	JLabel guestLabel = new JLabel("Greetings guest!");
-        	// Create back to home button
-        	JButton homeButton = new JButton("Back to Home");
-        	// Add Action Listener to return to home page
-        	homeButton.addActionListener(new HomeButtonListener(shop));
         	// Add label to display panel
         	displayPanel.add(guestLabel);
         	// Add button to display panel
-        	displayPanel.add(homeButton);
+        	displayPanel.add(getHomeButton());
+        	// Set an empty border for spacing
+        	displayPanel.setBorder(BorderFactory.createEmptyBorder(70, 30, 30, 30));
         	// Add display panel to main panel
         	mainPanel.add(displayPanel, BorderLayout.CENTER);
         	// Change login button text to Customer's name
@@ -71,14 +69,12 @@ public class LoginFieldListener implements ActionListener
 
         	// Create greetings label
             JLabel guestLabel = new JLabel("Greetings " + input + "!");
-            // Create back to home button
-        	JButton homeButton = new JButton("Back to Home");
-        	// Add Action Listener to return to home page
-        	homeButton.addActionListener(new HomeButtonListener(shop));
             // Add label to display panel
         	displayPanel.add(guestLabel);
         	// Add button to display panel
-        	displayPanel.add(homeButton);
+        	displayPanel.add(shop.getHomeButton());
+        	// Set an empty border for spacing
+        	displayPanel.setBorder(BorderFactory.createEmptyBorder(70, 30, 30, 30));
         	// Add display panel to main panel
         	mainPanel.add(displayPanel, BorderLayout.CENTER);
         	// Change login button text to Customer's name
@@ -102,6 +98,8 @@ public class LoginFieldListener implements ActionListener
         	displayPanel.add(guestLabel);
         	// Add text field to display panel
         	displayPanel.add(newLoginField);
+        	// Set an empty border for spacing
+        	displayPanel.setBorder(BorderFactory.createEmptyBorder(70, 30, 30, 30));
         	// Add display panel to main panel
         	mainPanel.add(displayPanel, BorderLayout.CENTER);
         }
