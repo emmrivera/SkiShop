@@ -66,6 +66,8 @@ public class SizeFieldListener implements ActionListener
             {
                 // Display error message with placeholder text
                 sizeField.setText("Size not available, please try again.");
+                // Change placeholder text color to gray
+                sizeField.setForeground(Color.GRAY);
             }
             // Otherwise if size is available, 
             else
@@ -79,6 +81,8 @@ public class SizeFieldListener implements ActionListener
         {
             // Display error message with placeholder text
             sizeField.setText("Invalid entry, please enter an integer.");
+            // Change placeholder text color to gray
+            sizeField.setForeground(Color.GRAY);
             // Display stack trace
             anyExceptions.printStackTrace();
         }

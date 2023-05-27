@@ -36,7 +36,7 @@ public class CartButtonListener implements ActionListener
 		// Hide current display panel
         shop.getDisplayPanel().setVisible(false);
         // Create new Panel
-        JPanel newPanel = new JPanel();
+        JPanel newPanel = new JPanel(new BorderLayout());
         // Set background color white
         newPanel.setBackground(Color.WHITE);
         // Set new display panel
@@ -48,16 +48,31 @@ public class CartButtonListener implements ActionListener
 		if (cart.getQuantity() > 0)
 		{
 			// Create label to display message
-	        JLabel messageLabel = new JLabel("Here are the product(s) in your cart: [Quantity: " 
-	        							+ cart.getQuantity() + "]");
+	        JLabel messageLabel = new JLabel("Here are the product(s) in your cart");
+	        // Center label
+            messageLabel.setVerticalAlignment(JLabel.CENTER);
+            messageLabel.setHorizontalAlignment(JLabel.CENTER);
 	        // Add label to display panel
 	        displayPanel.add(messageLabel, BorderLayout.NORTH);
-	        // Create label to display products
-	        JLabel products = new JLabel(cart.toString());
-	        // Add button to display panel
-	        displayPanel.add(products, BorderLayout.SOUTH);
 	        // Set an empty border for spacing
-        	displayPanel.setBorder(BorderFactory.createEmptyBorder(70, 30, 30, 30));
+        	displayPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+
+        	// Create text area to display products in cart
+            JTextArea cartTextArea = new JTextArea(cart.toString("cart"));
+            // Restrict editing
+            cartTextArea.setEditable(false);
+            // Wrap sentences to next line
+            cartTextArea.setLineWrap(true);
+            // Wrap entire words to next line
+            cartTextArea.setWrapStyleWord(true);
+
+            // Create scroll bar for the text area (search results)
+            JScrollPane scrollBar = new JScrollPane(cartTextArea);
+            // Set an empty border for spacing
+            scrollBar.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+            // Add text area to display panel
+            displayPanel.add(scrollBar, BorderLayout.CENTER);
+
 	        // Add panel to main panel
 	        mainPanel.add(displayPanel, BorderLayout.CENTER);
 		}
@@ -65,10 +80,9 @@ public class CartButtonListener implements ActionListener
 		{
 			// Create label to display message
 	        JLabel messageLabel = new JLabel("You have 0 products in your cart.");
-	        // Center horizontally
-	        messageLabel.setHorizontalAlignment(JLabel.CENTER); 
-	        // Center vertically
+	        // Center label
 	        messageLabel.setVerticalAlignment(JLabel.CENTER); 
+	        messageLabel.setHorizontalAlignment(JLabel.CENTER); 
 	        // Add button to display panel
 	        displayPanel.add(messageLabel, BorderLayout.NORTH);
 	        // Set an empty border for spacing

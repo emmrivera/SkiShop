@@ -361,8 +361,8 @@ public class Cart
                 // Iterate through each product of Product array
                 for (Product product : products)
                 {
-                    // If product's model name is equal to desired model name, return true
-                            if (product.getItemNumber() == productToCheck.getItemNumber())
+                    // If product's item number is equal to desired item number, return true
+                        if (product.getItemNumber() == productToCheck.getItemNumber())
                     {
                         // If the model namesof desired item is equal to the model names of any of the products in the cart, return true
                         return true;
@@ -875,11 +875,10 @@ public class Cart
      * Purpose: display 2D cart products
      * @return cart (String of products)
      */
-     @Override
-    public String toString()
+    public String toString(String cartType)
     {
         // Create int for count of products in cart
-        int count = 1;
+        int count = 0;
         // Create string to add products to
         String cart = "";
         // If there is more than 1 type of product, search through 2D array
@@ -900,9 +899,24 @@ public class Cart
                             // If cart String does not already contain model name, add product to String
                             if (!cart.contains(product.getModel()))
                             {
-                                // Increment product brand and model to string
-                                cart += "(" + (count++) + ") " + product.getBrand() + " " 
-                                + product.getModel() + " " + product.getType() + "\n";
+                                // If displaying search results, have list numbered
+                                if (cartType.equals("search"))
+                                {
+                                    // Increment product brand and model to string
+                                    cart += (++count) + ") " + product.getBrand() + " " 
+                                    + product.getModel() + " " + product.getType() + "\n";
+                                }
+                                // Otherwise if displaying cart products, numbers no longer needed
+                                else if (cartType.equals("cart"))
+                                {
+                                    // Initialize multiModels 2D array in order to find quantity of models
+                                    getModels();
+
+                                    // Increment product brand and model to string
+                                    cart += product.getBrand() + " " + product.getModel() 
+                                    + " " + product.getType()  + " [Quantity: " 
+                                    + multiModels[count++].length + "]" + "\n";
+                                }
                             }
                         }
                     }
@@ -924,9 +938,24 @@ public class Cart
                         // If cart String does not already contain model name, add product to String
                         if (!cart.contains(product.getModel()))
                         {
-                            // Increment product brand and model to string
-                            cart += "(" + (count++) + ") " + product.getBrand() + " " 
-                            + product.getModel() + " " + product.getType() + "\n";
+                            // If displaying search results, have list numbered
+                            if (cartType.equals("search"))
+                            {
+                                // Increment product brand and model to string
+                                cart += (++count) + ") " + product.getBrand() + " " 
+                                + product.getModel() + " " + product.getType() + "\n";
+                            }
+                            // Otherwise if displaying cart products, numbers no longer needed
+                            else if (cartType.equals("cart"))
+                            {
+                                // Initialize multiModels 2D array in order to find quantity of models
+                                getModels();
+
+                                // Increment product brand and model to string
+                                cart += product.getBrand() + " " + product.getModel() 
+                                + " " + product.getType()  + " [Quantity: " 
+                                + multiModels[count++].length + "]" + "\n";
+                            }
                         }
                     }
                 }

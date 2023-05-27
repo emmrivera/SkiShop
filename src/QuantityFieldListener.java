@@ -58,6 +58,8 @@ public class QuantityFieldListener implements ActionListener
             {
                 // Display error message in placeholder text
                 quantityField.setText("Invalid quantity, please try again.");
+                // Change placeholder text color to gray
+                quantityField.setForeground(Color.GRAY);
             }
             // Otherwise if quantity available, call addToCart() method to add to cart
             else 
@@ -69,7 +71,9 @@ public class QuantityFieldListener implements ActionListener
         catch (Exception anyExceptions)
         {
             // Display prompt to ask customer to re-enter correct input
-            System.out.println("Invalid entry, please enter an integer.");
+            quantityField.setText("Invalid entry, please enter an integer.");
+            // Change placeholder text color to gray
+            quantityField.setForeground(Color.GRAY);
             // Display stack trace
             anyExceptions.printStackTrace();
         }

@@ -275,13 +275,13 @@ public class SkiShop extends JFrame
         searchPanel.add(menuButton);
 
         // Create a text field for search
-        searchBar = new JTextField("Search");
+        searchBar = new JTextField("Enter a product or keyword");
         // Set the number of columns (desired width)
-        searchBar.setColumns(10);
+        searchBar.setColumns(20);
         // Set the text color for the placeholder
         searchBar.setForeground(Color.GRAY); 
         // Display message when mouse hovers over text field
-        searchBar.setToolTipText("Enter a product or keyword");
+        searchBar.setToolTipText("Leave field blank to view all products");
         // Add Mouse Listener to clear placeholder text and set color black when clicked
         searchBar.addMouseListener(new SearchBarMouseListener(searchBar));
         // Add Action Listener to search for Products when entering input into search bar
@@ -292,7 +292,7 @@ public class SkiShop extends JFrame
         // Create a button for search
         searchButton = new JButton(new ImageIcon("MagnifyingGlass.jpg"));
         // Display message when mouse hovers over button
-        searchButton.setToolTipText("Click to search for product");
+        searchButton.setToolTipText("Click to search for product/keyword");
         // Add Action Listener to search for Products when clicking on search button
         searchButton.addActionListener(new SearchButtonListener(this, searchBar));
         // Add to search panel
@@ -326,62 +326,6 @@ public class SkiShop extends JFrame
         cartButton.addActionListener(new CartButtonListener(this));
         // Add cart button to top right panel
         topRightPanel.add(cartButton);
-    }
-
-    /**
-     * Purpose: retrieve main panel
-     */
-    public JPanel getMainPanel()
-    {
-        return mainPanel;
-    }
-
-    /**
-     * Purpose: retrieve display panel
-     */
-    public JPanel getDisplayPanel()
-    {
-        return displayPanel;
-    }
-
-    /**
-     * Purpose: set new display panel
-     */
-    public void setDisplayPanel(JPanel newPanel)
-    {
-        displayPanel = newPanel;
-    }
-
-    /**
-     * Purpose: get home page label
-     */
-    public JLabel getHomeLabel()
-    {
-        return homeLabel;
-    }
-
-    /**
-     * Purpose: retrieve Customer
-     */
-    public Customer getCustomer()
-    {
-        return customer;
-    }
-
-    /**
-     * Purpose: retrieve cart
-     */
-    public Cart getCart()
-    {
-        return cart;
-    }
-
-    /**
-     * Purpose: get home button
-     */
-    public JButton getHomeButton()
-    {
-        return homeButton;
     }
 
     /**
@@ -720,10 +664,19 @@ public class SkiShop extends JFrame
         // If broadSearch method used change label text accordingly
         if (searchType.equals("broad"))
         {
-            results = count + " result(s) for \"" + fields[0] + "\"";
+            // If keyword is blank, display all products
+            if (fields[0].equals(""))
+            {
+                results = "All Products"; 
+            }
+            // Otherwise, display keyword entered
+            else 
+            {
+               results = count + " result(s) for \"" + fields[0] + "\""; 
+            }
         }
         // Otherwise, if typeSearch method used change label text accordingly
-        else 
+        else
         {
             results = searchType + " Inventory";
         }
@@ -742,7 +695,7 @@ public class SkiShop extends JFrame
             displayPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
             // Create text area to display search results 
-            JTextArea resultsTextArea = new JTextArea(searchResults.toString());
+            JTextArea resultsTextArea = new JTextArea(searchResults.toString("search"));
             // Restrict editing
             resultsTextArea.setEditable(false);
             // Wrap sentences to next line
@@ -789,20 +742,37 @@ public class SkiShop extends JFrame
         else 
         {
             // Create panel to display results label and home button
-            JPanel resultsPanel = new JPanel();
+            JPanel resultsPanel = new JPanel(new BorderLayout());
             // Set background color white
             resultsPanel.setBackground(Color.WHITE);
             // Create label to display number of results
-            JLabel resultsLabel = new JLabel("We found " + count + " result(s) for " + Arrays.toString(fields) + ":");
+            JLabel resultsLabel = new JLabel(results);
+            // Center label
+            resultsLabel.setVerticalAlignment(JLabel.CENTER);
+            resultsLabel.setHorizontalAlignment(JLabel.CENTER);
             // Add results label to panel
-            resultsPanel.add(resultsLabel);
+            resultsPanel.add(resultsLabel, BorderLayout.NORTH);
+
+            // Create text area to display products in cart
+            JTextArea resultsTextArea = new JTextArea("No products available...");
+            // Restrict editing
+            resultsTextArea.setEditable(false);
+            // Wrap sentences to next line
+            resultsTextArea.setLineWrap(true);
+            // Wrap entire words to next line
+            resultsTextArea.setWrapStyleWord(true);
+            // Set an empty border for spacing
+            resultsTextArea.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+            // Add text area to panel
+            resultsPanel.add(resultsTextArea, BorderLayout.CENTER);
+
             // Add home button to panel
-            resultsPanel.add(homeButton);
+            resultsPanel.add(homeButton, BorderLayout.SOUTH);
 
             // Add results panel to display panel
             displayPanel.add(resultsPanel, BorderLayout.CENTER);
             // Set an empty border for spacing
-            displayPanel.setBorder(BorderFactory.createEmptyBorder(70, 30, 30, 30));
+            displayPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
             // Add display panel to main panel
             mainPanel.add(displayPanel, BorderLayout.CENTER);
@@ -983,7 +953,7 @@ public class SkiShop extends JFrame
         newPanel.add(cartLabel);
 
         // Create text field for user input
-        JTextField proceedField = new JTextField("Enter checkout or shop");
+        JTextField proceedField = new JTextField("Enter checkout or home");
         // Set the number of columns (desired width)
         proceedField.setColumns(20);
         // Set the text color for the placeholder
@@ -994,16 +964,6 @@ public class SkiShop extends JFrame
         proceedField.addActionListener(new ProceedFieldListener(this, proceedField));
         // Add text field to proceed panel
         newPanel.add(proceedField);
-    }
-
-    /**
-     * Purpose: checkout function to display products in cart and proceed to purchase if desired
-     * @throws Exception
-     */
-    public void checkout() throws Exception
-    {   
-        // Click cart button to display products in cart
-        cartButton.doClick();
     }
 
     /**
@@ -1054,5 +1014,71 @@ public class SkiShop extends JFrame
         {
             return null;
         }
+    }
+
+    /**
+     * Purpose: checkout function to display products in cart and proceed to purchase if desired
+     * @throws Exception
+     */
+    public void checkout() throws Exception
+    {   
+        // Click cart button to display products in cart
+        cartButton.doClick();
+    }
+
+        /**
+     * Purpose: retrieve main panel
+     */
+    public JPanel getMainPanel()
+    {
+        return mainPanel;
+    }
+
+    /**
+     * Purpose: retrieve display panel
+     */
+    public JPanel getDisplayPanel()
+    {
+        return displayPanel;
+    }
+
+    /**
+     * Purpose: set new display panel
+     */
+    public void setDisplayPanel(JPanel newPanel)
+    {
+        displayPanel = newPanel;
+    }
+
+    /**
+     * Purpose: get home page label
+     */
+    public JLabel getHomeLabel()
+    {
+        return homeLabel;
+    }
+
+    /**
+     * Purpose: retrieve Customer
+     */
+    public Customer getCustomer()
+    {
+        return customer;
+    }
+
+    /**
+     * Purpose: retrieve cart
+     */
+    public Cart getCart()
+    {
+        return cart;
+    }
+
+    /**
+     * Purpose: get home button
+     */
+    public JButton getHomeButton()
+    {
+        return homeButton;
     }
 }

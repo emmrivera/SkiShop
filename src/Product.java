@@ -185,9 +185,7 @@ public abstract class Product
         // Display brand
         info += brand + " ";
         // Display model
-        info += model + " ";
-        // Display price
-        info += price;
+        info += model;
         // Return product info
         return info;
     }

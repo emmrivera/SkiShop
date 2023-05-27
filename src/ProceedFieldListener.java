@@ -42,9 +42,17 @@ public class ProceedFieldListener implements ActionListener
                 shop.checkout();
             }
             // Otherwise, exit loop and return to home page
-            else 
+            else if (input.equals("home"))
             {
                 shop.homePage();
+            }
+            // Otherwise, display error message in text field
+            else 
+            {
+                // Display error message
+                proceedField.setText("Invalid entry, please enter checkout or home");
+                // Change placeholder text color to gray
+                proceedField.setForeground(Color.GRAY);
             }
         }
         // Display stack trace if any exceptions thrown
@@ -52,6 +60,5 @@ public class ProceedFieldListener implements ActionListener
         {
             anyExceptions.printStackTrace();
         }
-        
     }
 }
