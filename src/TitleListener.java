@@ -33,8 +33,8 @@ public class TitleListener implements MouseListener
         // Execute method call which might throw exceptions
         try 
         {
-            // Call method to go to "home" screen
-            shop.mainMenu();
+            // Call method to go to "home" page
+            shop.homePage();
         }
         // Display stack trace if any exceptions are caught
         catch (Exception anyExceptions)

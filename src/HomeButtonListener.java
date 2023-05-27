@@ -34,7 +34,7 @@ public class HomeButtonListener implements ActionListener
         try 
         {
             // Call method to go to "home" screen
-            shop.mainMenu();
+            shop.homePage();
         }
         // Display stack trace if any exceptions are caught
         catch (Exception anyExceptions)

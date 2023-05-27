@@ -32,8 +32,8 @@ public class BindingsItemListener implements ActionListener
 		// Try-block to run method which may throw an exception
 		try
 		{
-			// Call broadSearch method to search for Skis
-			shop.broadSearch("bindings");
+			// Call typeSearch method to search for bindings
+			shop.typeSearch("Bindings");
 		}
 		// Catch-block to catch any exceptions and print stack trace
 		catch (Exception anyExceptions)

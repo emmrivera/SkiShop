@@ -385,10 +385,10 @@ public class SkiShop extends JFrame
     }
 
     /**
-     * Purpose: start the main menu
+     * Purpose: return to home page
      * @throws Exception
      */
-    public void mainMenu() throws Exception
+    public void homePage() throws Exception
     {   
         // Hide current panel
         displayPanel.setVisible(false);
@@ -435,7 +435,36 @@ public class SkiShop extends JFrame
             }
         }
         // Display results
-        displayResults(searchResults, fields);
+        displayResults(searchResults, fields, "broad");
+    }
+
+    /**
+     * Purpose: perform search of specific Product type
+     * @throws Exception
+     */
+    public void typeSearch(String type) throws Exception
+    {
+        // Create empty String to get all products
+        String allProducts = "";
+        // Create a Product array for all search results
+        Product[] productArray;
+        // Create a String array for keyword
+        String[] fields = new String[]{allProducts};
+        // Create a cart to add search results to
+        Cart searchResults = new Cart();
+        // Scan the inventory file and assign the cart's array of products to "productArray"
+        productArray = scanInventory(type, allProducts).getProducts();
+        if (productArray != null)
+        {
+            // Search through each product in array
+            for (Product product : productArray)
+            {
+                // Add each product to the seach results cart
+                searchResults.addToCart(product);
+            }
+        }
+        // Display results
+        displayResults(searchResults, fields, type);
     }
 
     // /**
@@ -670,7 +699,7 @@ public class SkiShop extends JFrame
      * Purpose: display search results
      * @throws Exception
      */
-    public void displayResults(Cart searchResults, String[] fields) throws Exception
+    public void displayResults(Cart searchResults, String[] fields, String searchType) throws Exception
     {
         // Call getModels() method to create array for different types of models of Products
         searchResults.getModels();
@@ -685,12 +714,25 @@ public class SkiShop extends JFrame
         newPanel.setBackground(Color.WHITE);
         // Set new display panel
         setDisplayPanel(newPanel);
+        // Create String for results label text
+        String results = "";
+
+        // If broadSearch method used change label text accordingly
+        if (searchType.equals("broad"))
+        {
+            results = count + " result(s) for \"" + fields[0] + "\"";
+        }
+        // Otherwise, if typeSearch method used change label text accordingly
+        else 
+        {
+            results = searchType + " Inventory";
+        }
 
         // If at least 1 product found, display results
         if (count > 0)
         {
             // Create label to display number of results
-            JLabel resultsLabel = new JLabel("We found " + count + " result(s) for " + Arrays.toString(fields) + ":");
+            JLabel resultsLabel = new JLabel(results);
             // Center label
             resultsLabel.setVerticalAlignment(JLabel.CENTER);
             resultsLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -746,21 +788,27 @@ public class SkiShop extends JFrame
         // Otherwise, display no results found
         else 
         {
+            // Create panel to display results label and home button
+            JPanel resultsPanel = new JPanel();
+            // Set background color white
+            resultsPanel.setBackground(Color.WHITE);
             // Create label to display number of results
             JLabel resultsLabel = new JLabel("We found " + count + " result(s) for " + Arrays.toString(fields) + ":");
-            // Center label
-            resultsLabel.setVerticalAlignment(JLabel.CENTER);
-            resultsLabel.setHorizontalAlignment(JLabel.CENTER);
-            // Add label to display panel
-            displayPanel.add(resultsLabel, BorderLayout.NORTH);
+            // // Center label
+            // resultsLabel.setVerticalAlignment(JLabel.CENTER);
+            // resultsLabel.setHorizontalAlignment(JLabel.CENTER);
+            // Add results label to panel
+            resultsPanel.add(resultsLabel);
+            // Add home button to panel
+            resultsPanel.add(homeButton);
+
+            // Add results panel to display panel
+            displayPanel.add(resultsPanel, BorderLayout.CENTER);
             // Set an empty border for spacing
             displayPanel.setBorder(BorderFactory.createEmptyBorder(70, 30, 30, 30));
 
             // Add display panel to main panel
             mainPanel.add(displayPanel, BorderLayout.CENTER);
-
-            // // Return to main menu
-            // mainMenu();
         }
     }
 

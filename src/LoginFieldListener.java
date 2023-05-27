@@ -53,7 +53,7 @@ public class LoginFieldListener implements ActionListener
         	// Add label to display panel
         	displayPanel.add(guestLabel);
         	// Add button to display panel
-        	displayPanel.add(getHomeButton());
+        	displayPanel.add(shop.getHomeButton());
         	// Set an empty border for spacing
         	displayPanel.setBorder(BorderFactory.createEmptyBorder(70, 30, 30, 30));
         	// Add display panel to main panel

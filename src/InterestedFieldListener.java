@@ -65,14 +65,14 @@ public class InterestedFieldListener implements ActionListener
             // Add text field to panel
             newPanel.add(selectionField);
         }
-        // If the input was no, then call method to return to main menu 
+        // If the input was no, then call method to return to home page
         else 
         {
             // Execute method which may throw exceptions
             try 
             {
-                // Call method to start over
-                shop.mainMenu();
+                // Call method to return to home page
+                shop.homePage();
             }
             // Catch exception and print stack trace
             catch (Exception anyExceptions)

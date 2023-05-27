@@ -41,10 +41,10 @@ public class ProceedFieldListener implements ActionListener
             {
                 shop.checkout();
             }
-            // Otherwise, exit loop and return to main menu
+            // Otherwise, exit loop and return to home page
             else 
             {
-                shop.mainMenu();
+                shop.homePage();
             }
         }
         // Display stack trace if any exceptions thrown

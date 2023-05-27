@@ -32,8 +32,8 @@ public class SnowboardItemListener implements ActionListener
 		// Try-block to run method which may throw an exception
 		try
 		{
-			// Call broadSearch method to search for Skis
-			shop.broadSearch("snowboard");
+			// Call typeSearch method to search for snowboards
+			shop.typeSearch("Snowboard");
 		}
 		// Catch-block to catch any exceptions and print stack trace
 		catch (Exception anyExceptions)
