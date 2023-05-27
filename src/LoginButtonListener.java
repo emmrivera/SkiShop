@@ -39,7 +39,8 @@ public class LoginButtonListener implements ActionListener
     {
     	// Hide current display panel
         shop.getDisplayPanel().setVisible(false);
-        // Create new Panel
+
+        // Create new panel for prompt label and text field
         JPanel newPanel = new JPanel();
         // Set background color white
         newPanel.setBackground(Color.WHITE);
@@ -47,9 +48,11 @@ public class LoginButtonListener implements ActionListener
         shop.setDisplayPanel(newPanel);
         // Assign display panel
         displayPanel = shop.getDisplayPanel();
+        // Set an empty border for spacing
+        displayPanel.setBorder(BorderFactory.createEmptyBorder(70, 30, 30, 30));
 
         // Create login label
-        JLabel loginLabel = new JLabel("\nEnter email to login");
+        JLabel loginLabel = new JLabel("Enter email to login");
         // Center horizontally
         loginLabel.setHorizontalAlignment(JLabel.CENTER); 
         // Center vertically
@@ -67,9 +70,9 @@ public class LoginButtonListener implements ActionListener
         loginField.addMouseListener(new LoginFieldMouseListener(loginField));
         // Add Action Listener to text field to retrieve user info based on email given or proceed as a
         loginField.addActionListener(new LoginFieldListener(shop, loginField, loginButton));
-        
         // Add text field to panel
         displayPanel.add(loginField);
+
         // Add display panel to main panel
         mainPanel.add(displayPanel, BorderLayout.CENTER);
     }

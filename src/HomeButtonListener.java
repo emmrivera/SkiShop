@@ -46,6 +46,8 @@ public class HomeButtonListener implements ActionListener
 
         // Add label to display panel
         displayPanel.add(shop.getHomeLabel());
+        // Set an empty border for spacing
+        displayPanel.setBorder(BorderFactory.createEmptyBorder(70, 30, 30, 30));
         // Add panel to main panel
         mainPanel.add(displayPanel, BorderLayout.CENTER);
     }

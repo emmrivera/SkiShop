@@ -56,6 +56,8 @@ public class CartButtonListener implements ActionListener
 	        JLabel products = new JLabel(cart.toString());
 	        // Add button to display panel
 	        displayPanel.add(products, BorderLayout.SOUTH);
+	        // Set an empty border for spacing
+        	displayPanel.setBorder(BorderFactory.createEmptyBorder(70, 30, 30, 30));
 	        // Add panel to main panel
 	        mainPanel.add(displayPanel, BorderLayout.CENTER);
 		}
@@ -69,6 +71,8 @@ public class CartButtonListener implements ActionListener
 	        messageLabel.setVerticalAlignment(JLabel.CENTER); 
 	        // Add button to display panel
 	        displayPanel.add(messageLabel, BorderLayout.NORTH);
+	        // Set an empty border for spacing
+        	displayPanel.setBorder(BorderFactory.createEmptyBorder(70, 30, 30, 30));
 	        // Add panel to main panel
 	        mainPanel.add(displayPanel, BorderLayout.CENTER);
 		}

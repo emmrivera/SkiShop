@@ -668,7 +668,7 @@ public class SkiShop extends JFrame
         if (count > 0)
         {
             // Create label to display number of results
-            JLabel resultsLabel = new JLabel("\nWe found " + count + " result(s) for " + Arrays.toString(fields) + ":\n");
+            JLabel resultsLabel = new JLabel("We found " + count + " result(s) for " + Arrays.toString(fields) + ":");
             // Center label
             resultsLabel.setVerticalAlignment(JLabel.CENTER);
             resultsLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -746,7 +746,7 @@ public class SkiShop extends JFrame
         // Assign desired selection (based on item number / model index) to a Product array
         Product[] modelArray = searchResults.getSpecificModel(itemNumber);
         // Create text field for user input
-        JTextField sizeField = new JTextField("");
+        JTextField sizeField = new JTextField();
         // If desired item is within the search results list, continue
         if (itemInSearchResults)
         { 

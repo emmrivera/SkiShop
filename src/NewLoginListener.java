@@ -109,6 +109,8 @@ public class NewLoginListener implements ActionListener
 	        	displayPanel.add(guestLabel);
 	        	// Add button to display panel
 	        	displayPanel.add(homeButton);
+	        	// Set an empty border for spacing
+        		displayPanel.setBorder(BorderFactory.createEmptyBorder(70, 30, 30, 30));
 	        	// Add display panel to main panel
 	        	mainPanel.add(displayPanel, BorderLayout.CENTER);
 	        	// Change login button text to Customer's name

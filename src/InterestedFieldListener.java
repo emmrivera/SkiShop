@@ -49,7 +49,7 @@ public class InterestedFieldListener implements ActionListener
             shop.getDisplayPanel().add(newPanel, BorderLayout.SOUTH);
 
             // Create label to display prompt to ask for desired item or if customer would like to proceed to checkout or continue shopping
-            JLabel selectionLabel = new JLabel("\nEnter your desired selection");
+            JLabel selectionLabel = new JLabel("Enter your desired selection");
             // Create text field for user input
             JTextField selectionField = new JTextField("Enter Item #");
             // Set the number of columns for text field
