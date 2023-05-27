@@ -19,7 +19,7 @@ import java.util.Arrays;
 public class Cart
 {
     // A cart HAS-MANY types of products
-    private String[] productTypes = new String[]{"Skis", "Snowboard","Boots", "Bindings", "SkiPoles"};  
+    private String[] productTypes = new String[]{"Skis", "Snowboard","Boots", "Bindings", "Poles"};  
     private Product[] products;             // A cart HAS-MANY Products 
     private Product[][] multiProducts;      // A cart HAS-MANY Products of different types
     private Product[][] multiModels;        // A cart HAS-MANY different models of Product

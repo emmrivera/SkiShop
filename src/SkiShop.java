@@ -794,9 +794,6 @@ public class SkiShop extends JFrame
             resultsPanel.setBackground(Color.WHITE);
             // Create label to display number of results
             JLabel resultsLabel = new JLabel("We found " + count + " result(s) for " + Arrays.toString(fields) + ":");
-            // // Center label
-            // resultsLabel.setVerticalAlignment(JLabel.CENTER);
-            // resultsLabel.setHorizontalAlignment(JLabel.CENTER);
             // Add results label to panel
             resultsPanel.add(resultsLabel);
             // Add home button to panel
