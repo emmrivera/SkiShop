@@ -175,12 +175,16 @@ public class SkiShop extends JFrame
         displayPanel.setBackground(Color.WHITE);
         // Create welcome label
         welcomeLabel = new JLabel("Welcome to " + shopName + "!");
+        // Set font
+        welcomeLabel.setFont(new Font("Serif", Font.ITALIC + Font.BOLD, 24));
         // Center horizontally
         welcomeLabel.setHorizontalAlignment(JLabel.CENTER); 
         // Center vertically
         welcomeLabel.setVerticalAlignment(JLabel.CENTER); 
         // Add label to welcome panel
         displayPanel.add(welcomeLabel, BorderLayout.NORTH);
+        // Set an empty border for spacing
+        displayPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
         // Create welcome message
         welcomeTextArea = new JTextArea("Our ski shop is the " +
@@ -190,6 +194,8 @@ public class SkiShop extends JFrame
                             "the bunny slopes or an expert tearing up the park, " +
                             "we have everything you need to tackle the mountains " +
                             "and ride the powder with confidence!");
+        // Set font
+        welcomeTextArea.setFont(new Font("Serif", Font.PLAIN, 16));
         // Restrict editing
         welcomeTextArea.setEditable(false);
         // Wrap sentences to next line
@@ -197,7 +203,7 @@ public class SkiShop extends JFrame
         // Wrap entire words to next line
         welcomeTextArea.setWrapStyleWord(true);
         // Set an empty border for spacing
-        welcomeTextArea.setBorder(BorderFactory.createEmptyBorder(30, 30, 50, 30));
+        welcomeTextArea.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
         // Create home page label
         homeLabel = new JLabel("To browse our selection of products, " + 
@@ -381,6 +387,8 @@ public class SkiShop extends JFrame
 
         // Add label to display panel
         displayPanel.add(getHomeLabel());
+        // Set an empty border for spacing
+        displayPanel.setBorder(BorderFactory.createEmptyBorder(70, 30, 30, 30));
         // Add panel to main panel
         mainPanel.add(displayPanel, BorderLayout.CENTER);
     }
