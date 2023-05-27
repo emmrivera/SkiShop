@@ -704,7 +704,7 @@ public class SkiShop extends JFrame
             // Create text field for user input
             JTextField interestedField = new JTextField("Enter yes or no");
             // Set the number of columns (desired width)
-            interestedField.setColumns(10);
+            interestedField.setColumns(20);
             // Set the text color for the placeholder
             interestedField.setForeground(Color.GRAY); 
             // Add Mouse Listener to clear text when clicked
@@ -794,7 +794,7 @@ public class SkiShop extends JFrame
             // Create text field for user input
             sizeField.setText("Enter available size");
             // Set the number of columns (desired width)
-            sizeField.setColumns(10);
+            sizeField.setColumns(20);
             // Set the text color for the placeholder
             sizeField.setForeground(Color.GRAY); 
             // Add Mouse Listener to clear text when clicked
@@ -835,7 +835,7 @@ public class SkiShop extends JFrame
         // Create text field for user input
         JTextField quantityField = new JTextField("Enter desired quantity");
         // Set the number of columns (desired width)
-        quantityField.setColumns(10);
+        quantityField.setColumns(20);
         // Set the text color for the placeholder
         quantityField.setForeground(Color.GRAY); 
         // Add Mouse Listener to clear text when clicked
@@ -869,7 +869,7 @@ public class SkiShop extends JFrame
         // Create text field for user input
         JTextField cartField = new JTextField("Enter yes or no");
         // Set the number of columns (desired width)
-        cartField.setColumns(10);
+        cartField.setColumns(20);
         // Set the text color for the placeholder
         cartField.setForeground(Color.GRAY); 
         // Add Mouse Listener to clear text when clicked
@@ -903,7 +903,7 @@ public class SkiShop extends JFrame
         // Create text field for user input
         JTextField proceedField = new JTextField("Enter checkout or shop");
         // Set the number of columns (desired width)
-        proceedField.setColumns(10);
+        proceedField.setColumns(20);
         // Set the text color for the placeholder
         proceedField.setForeground(Color.GRAY); 
         // Add Mouse Listener to clear text when clicked

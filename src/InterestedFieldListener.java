@@ -53,7 +53,7 @@ public class InterestedFieldListener implements ActionListener
             // Create text field for user input
             JTextField selectionField = new JTextField("Enter Item #");
             // Set the number of columns for text field
-            selectionField.setColumns(10);
+            selectionField.setColumns(20);
             // Set color of placeholder text
             selectionField.setForeground(Color.GRAY);
             // Add Mouse Listener to clear placeholder text when clicked
