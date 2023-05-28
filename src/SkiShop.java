@@ -27,8 +27,8 @@ public class SkiShop extends JFrame
                    sizeFilter = "0",                    // The Ski Shop HAS-A size filter selection
                    priceFilter = "0",                   // The Ski Shop HAS-A price filter selection
                    genderFilter = "all",                // The Ski Shop HAS-A gender filter selection
-                   skillFilter = "all",                 // The Ski Shop HAS-A skill filter selection
-                   sportFilter = "all";                 // The Ski Shop HAS-A sport filter selection
+                   skillFilter,                         // The Ski Shop HAS-A skill filter selection
+                   sportFilter;                         // The Ski Shop HAS-A sport filter selection
     private Customer customer = new Customer();         // The Ski Shop HAS-A customer
     private Cart cart = new Cart();                     // The Ski Shop HAS-A cart which holds the desired products to purchase
     private JPanel mainPanel,                           // The Ski Shop HAS-A main panel for all components
@@ -454,12 +454,14 @@ public class SkiShop extends JFrame
         JRadioButton price100 = new JRadioButton("Under $100");
         JRadioButton price250 = new JRadioButton("Under $250");
         JRadioButton price500 = new JRadioButton("Under 500");
+        JRadioButton allPrices = new JRadioButton("All Prices");
 
         // Add action listeners for price radio buttons
         price50.addActionListener(new Price50Listener(this, price50));
         price100.addActionListener(new Price100Listener(this, price100));
         price250.addActionListener(new Price250Listener(this, price250));
         price500.addActionListener(new Price500Listener(this, price500));
+        allPrices.addActionListener(new AllPricesListener(this, allPrices));
 
         // Create button group so only one button can be selected at a time
         ButtonGroup priceGroup = new ButtonGroup();
@@ -468,12 +470,14 @@ public class SkiShop extends JFrame
         priceGroup.add(price100);
         priceGroup.add(price250);
         priceGroup.add(price500);
+        priceGroup.add(allPrices);
 
         // Add prices to menu
         priceMenu.add(price50);
         priceMenu.add(price100);
         priceMenu.add(price250);
         priceMenu.add(price500);
+        priceMenu.add(allPrices);
 
         // Create gender radio buttons
         JRadioButton men = new JRadioButton("Men");
@@ -501,11 +505,13 @@ public class SkiShop extends JFrame
         JRadioButton beginner = new JRadioButton("Beginner");
         JRadioButton intermediate = new JRadioButton("Intermediate");
         JRadioButton advanced = new JRadioButton("Advanced");
+        JRadioButton allSkills = new JRadioButton("All Skills");
 
         // Add action listeners for skill radio buttons
         beginner.addActionListener(new BeginnerListener(this, beginner));
         intermediate.addActionListener(new IntermediateListener(this, intermediate));
         advanced.addActionListener(new AdvancedListener(this, advanced));
+        allSkills.addActionListener(new AllSkillsListener(this, allSkills));
 
         // Create button group so only one button can be selected at a time
         ButtonGroup skillGroup = new ButtonGroup();
@@ -513,11 +519,13 @@ public class SkiShop extends JFrame
         skillGroup.add(beginner);
         skillGroup.add(intermediate);
         skillGroup.add(advanced);
+        skillGroup.add(allSkills);
 
         // Add prices to menu
         skillMenu.add(beginner);
         skillMenu.add(intermediate);
         skillMenu.add(advanced);
+        skillMenu.add(allSkills);
     }
 
     /**
@@ -642,13 +650,13 @@ public class SkiShop extends JFrame
         ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(typeFilter, brandFilter, modelFilter, priceFilter, sizeFilter, genderFilter));    
         
         // If type equals "skis" or "snowboard", continue
-        if (typeFilter.equals("skis") || typeFilter.equals("snowboard"))
+        if (typeFilter.equals("Skis") || typeFilter.equals("Snowboard"))
         {
             // Add skill filter to ArrayList
             arrayList.add(skillFilter);
         }
         // If type equals "boots" or "bindings", continue
-        else if (typeFilter.equals("boots") || typeFilter.equals("bindings"))
+        else if (typeFilter.equals("Boots") || typeFilter.equals("Bindings"))
         {
             // Add sport to ArrayList
             arrayList.add(sportFilter);
@@ -720,168 +728,6 @@ public class SkiShop extends JFrame
         // Display results
         displayResults(cart, fields, "advanced");
     }
-
-    // /**
-    //  * Purpose: Purpose: specific search using filters (via prompts) 
-    //  * @throws Exception
-    //  */
-    // public void advancedSearch() throws Exception
-    // {   
-    //     // String for type of product
-    //     String type = "";
-    //     // String for desired type
-    //     String desiredType = "";
-    //     // Flag for while loop
-    //     boolean validType = false;
-    //     // Do-While loop to repeat until input is valid
-    //     do 
-    //     {
-    //         // Narrow search critera based on category of gear
-    //         System.out.println("\nWhat type of gear are you looking for?\n" +
-    //                                         Arrays.toString(types).toLowerCase());
-    //         // Store input
-    //         type = input.nextLine().toLowerCase();
-    //         // Check if entry is equal to one of the product types
-    //         for (String eachType : types)
-    //         {
-    //             // If yes, assign true
-    //             if (type.equals(eachType.toLowerCase()))
-    //             {
-    //                 validType = true;
-    //                 // Assign desired type
-    //                 desiredType = eachType;
-    //             }
-    //         }
-    //     // Repeat question until a valid type is entered
-    //     } while (!validType);
-
-    //     // Narrow search critera based on brand
-    //     System.out.println("\nDid you have a brand you prefer?\n" +
-    //                         "(Enter brand or \"all\" to include all brands):");
-    //     // Store input
-    //     String brand = input.nextLine().toLowerCase();
-
-    //     // Narrow search critera based on brand
-    //     System.out.println("\nDo you know the model of the product?\n" +
-    //                         "(Enter model or \"all\" to include all models):");
-    //     // Store input
-    //     String model = input.nextLine().toLowerCase();
-
-    //     // Narrow search critera based on price
-    //     System.out.println("\nWhat does your budget look like?\n" +
-    //                         "(Enter max price or 0 to include all prices):");
-    //     // Store input
-    //     String budget = input.nextLine().toLowerCase();
-
-    //     // Narrow search critera based on size
-    //     System.out.println("\nDo you know your size?\n" +
-    //                         "(Enter size or 0 to include all sizes):");
-    //     // Store input
-    //     String size = input.nextLine().toLowerCase();
-
-    //     // Narrow search critera based on gender-specific gear
-    //     System.out.println("\nAre you interested in Men's or Women's gear?\n" +
-    //                         "(Enter \"mens\", \"womens\", or \"all\" to include both):");
-    //     // Store input
-    //     String gender = input.nextLine().toLowerCase();
-
-    //     // Store all input into an ArrayList of Strings
-    //     ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(type, brand, model, budget, size, gender));     
-
-    //     // String for skill level
-    //     String skillLevel = "";
-    //     // String for sport
-    //     String sport = "";
-        
-    //     // If type equals "skis" or "snowboard", continue
-    //     if (type.equals("skis") || type.equals("snowboard"))
-    //     {
-    //         // Narrow search critera based on riding ability
-    //         System.out.println("\nWould you consider yourself a beginner, intermediate, or advanced rider?\n" +
-    //                             "(Enter \"beginner\", \"intermediate\", \"advanced\", or \"all\" to include all):");
-    //         // Store input
-    //         skillLevel = input.nextLine().toLowerCase();
-    //         // Add skill level to ArrayList
-    //         arrayList.add(skillLevel);
-    //     }
-    //     // If type equals "boots" or "bindings", continue
-    //     else if (type.equals("boots") || type.equals("bindings"))
-    //     {
-    //         // Narrow search critera based on sport
-    //         System.out.println("\nAre you a skier or snowboarder?\n" +
-    //                             "(Enter \"ski\", \"snowboard\", or \"all\" to include both):");
-    //         // Store input
-    //         sport = input.nextLine().toLowerCase();  
-    //         // Add sport to ArrayList
-    //         arrayList.add(sport);
-    //     }
-
-    //     // Create a String array to copy fields from ArrayList to
-    //     String[] fields = new String[arrayList.size()];
-    //     // For loop to copy ArrayList to String array
-    //     for (int i = 0; i < arrayList.size(); i++)
-    //     {
-    //         // Assign field
-    //         fields[i] = arrayList.get(i);
-    //     }
-
-    //     // Create a cart for results
-    //     Cart cart = new Cart();
-    //     // Create a product array to hold list of all products based on type
-    //     Product[] array = scanInventory(desiredType, "").getProducts();  
-    //     // Iterate through each product in array
-    //     for (Product product : array)
-    //     {
-    //         // If the brand of product equals input, continue
-    //         if (product.getBrand().toLowerCase().equals(brand) || brand.equals("all"))
-    //         {   
-    //             // If the model of product equals input, continue
-    //             if (product.getModel().toLowerCase().equals(model) || model.equals("all"))
-    //             { 
-    //                 // If the price of product is less than input or input is 0, continue
-    //                 if (product.getPrice() < Double.valueOf(budget) || Double.valueOf(budget) == 0)
-    //                 {
-    //                     // If the size of product equals input or input is 0, continue
-    //                     if (product.getSize() == Integer.valueOf(size) || Integer.valueOf(size) == 0)
-    //                     {
-    //                         // If the gender of product equals input or input is "all", continue
-    //                         if (product.getGender().toLowerCase().equals(gender) || product.getGender().equals("Unisex") || gender.equals("all"))
-    //                         {
-    //                             // If type equals "skis" or "snowboard", continue
-    //                             if (type.equals("skis") || type.equals("snowboard"))
-    //                             {
-    //                                 // If the skill level of product equals input or input is "all", continue
-    //                                 if (product.getSkillLevel().toLowerCase().equals(skillLevel) || skillLevel.equals("all"))
-    //                                 {
-    //                                     // If all fields are met, add product to cart
-    //                                     cart.addToCart(product);
-    //                                 }
-    //                             }
-    //                             // If type equals "boots" or "bindings", continue
-    //                             else if (type.equals("boots") || type.equals("bindings"))
-    //                             {
-    //                                 // If the sport equals input or input is "all", continue
-    //                                 if (product.getSport().toLowerCase().equals(sport) || product.getSport().equals("Unisex") || sport.equals("all"))
-    //                                 {
-    //                                     // If all fields are met, add product to cart
-    //                                     cart.addToCart(product);
-    //                                 }   
-    //                             }
-    //                             // Otherwise, if the type is none of those above
-    //                             else 
-    //                             {
-    //                                 // If all fields are met, add product to cart
-    //                                 cart.addToCart(product);
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     // Display results
-    //     displayResults(cart, fields);
-    // }
 
     /**
      * Purpose: scan through inventory
@@ -987,7 +833,7 @@ public class SkiShop extends JFrame
         }
         else if (searchType.equals("advanced"))
         {
-            results = count + " result(s) for \"" + fields[0] + "\""; 
+
         }
         // Otherwise, if typeSearch method used change label text accordingly
         else
@@ -1401,7 +1247,7 @@ public class SkiShop extends JFrame
      */
     public void setTypeFilter(String typeFilter)
     {
-        this.typeFilter = typeFilter.toLowerCase();
+        this.typeFilter = typeFilter;
     }
 
     /**

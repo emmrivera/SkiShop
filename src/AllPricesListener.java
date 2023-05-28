@@ -12,27 +12,27 @@ import java.awt.event.*;                	// For ActionListener interface
  * Version/date: 1.0
  * 
  * Responsibilities of class:
- * Set gender filter if radio button selected
+ * Set price filter if radio button selected
  */
 
-public class UnisexListener implements ActionListener
+public class AllPricesListener implements ActionListener
 {
-	private SkiShop shop;					// UnisexListener HAS-A ski shop
-	private JRadioButton unisex;			// UnisexListener HAS-A radio button for gender
+	private SkiShop shop;					// AllPricesListener HAS-A ski shop
+	private JRadioButton allPrices;			// AllPricesListener HAS-A radio button for price
 
-	public UnisexListener(SkiShop shop, JRadioButton unisex)
+	public AllPricesListener(SkiShop shop, JRadioButton allPrices)
 	{
 		this.shop = shop;					// Assign ski shop
-		this.unisex = unisex;				// Assign radio button gender
+		this.allPrices = allPrices;			// Assign radio button price
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		// If gender button is selected set gender filter
-		if (unisex.isSelected())
+		// If price button is selected set price filter
+		if (allPrices.isSelected())
 		{
-			shop.setGenderFilter("all");
+			shop.setPriceFilter("0");
 		}
 	}
 }
