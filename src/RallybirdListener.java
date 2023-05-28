@@ -33,6 +33,7 @@ public class RallybirdListener implements ActionListener
 		if (rallybird.isSelected())
 		{
 			shop.setModelFilter("Rallybird");
+			shop.setTypeFilter("Skis");
 		}
 	}
 }

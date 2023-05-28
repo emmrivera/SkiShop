@@ -18,21 +18,23 @@ import java.awt.event.*;                	// For ActionListener interface
 public class RulerListener implements ActionListener
 {
 	private SkiShop shop;					// RulerListener HAS-A ski shop
-	private JRadioButton ruler;			// RulerListener HAS-A radio button for model
+	private JRadioButton ruler;				// RulerListener HAS-A radio button for model
 
 	public RulerListener(SkiShop shop, JRadioButton ruler)
 	{
 		this.shop = shop;					// Assign ski shop
-		this.ruler = ruler;			// Assign radio button model
-	}
+		this.ruler = ruler;					// Assign radio button model
+	}	
 
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		// If model button is selected set model filter
+		// If model button is selected set model, type, and soprt filter
 		if (ruler.isSelected())
 		{
-			shop.setModelFilter("ruler");
+			shop.setModelFilter("Ruler");
+			shop.setTypeFilter("Boots");
+			shop.setSportFilter("Snowboard");
 		}
 	}
 }

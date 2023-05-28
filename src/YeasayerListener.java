@@ -33,6 +33,7 @@ public class YeasayerListener implements ActionListener
 		if (yeasayer.isSelected())
 		{
 			shop.setModelFilter("Yeasayer");
+			shop.setTypeFilter("Snowboard");
 		}
 	}
 }

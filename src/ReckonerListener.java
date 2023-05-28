@@ -33,6 +33,7 @@ public class ReckonerListener implements ActionListener
 		if (reckoner.isSelected())
 		{
 			shop.setModelFilter("Reckoner");
+			shop.setTypeFilter("Skis");
 		}
 	}
 }

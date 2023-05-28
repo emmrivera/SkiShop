@@ -29,10 +29,12 @@ public class CartelListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		// If model button is selected set model filter
+		// If model button is selected set model, type, and sport filter
 		if (cartel.isSelected())
 		{
 			shop.setModelFilter("Cartel");
+			shop.setTypeFilter("Bindings");
+			shop.setSportFilter("Snowboard");
 		}
 	}
 }

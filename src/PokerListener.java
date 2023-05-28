@@ -33,6 +33,7 @@ public class PokerListener implements ActionListener
 		if (poker.isSelected())
 		{
 			shop.setModelFilter("Poker");
+			shop.setTypeFilter("Poles");
 		}
 	}
 }

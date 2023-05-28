@@ -32,7 +32,7 @@ public class Price100Listener implements ActionListener
 		// If price button is selected set price filter
 		if (price100.isSelected())
 		{
-			shop.setPriceFilter(100.0);
+			shop.setPriceFilter("100");
 		}
 	}
 }

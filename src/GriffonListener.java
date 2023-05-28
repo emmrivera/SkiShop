@@ -29,10 +29,12 @@ public class GriffonListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		// If model button is selected set model filter
+		// If model button is selected set model, type, and sport filter
 		if (griffon.isSelected())
 		{
 			shop.setModelFilter("Griffon");
+			shop.setTypeFilter("Bindings");
+			shop.setSportFilter("Ski");
 		}
 	}
 }

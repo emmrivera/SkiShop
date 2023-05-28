@@ -33,6 +33,7 @@ public class ProcessListener implements ActionListener
 		if (process.isSelected())
 		{
 			shop.setModelFilter("Process");
+			shop.setTypeFilter("Snowboard");
 		}
 	}
 }

@@ -33,6 +33,7 @@ public class TacticListener implements ActionListener
 		if (tactic.isSelected())
 		{
 			shop.setModelFilter("Tactic");
+			shop.setTypeFilter("Poles");
 		}
 	}
 }
