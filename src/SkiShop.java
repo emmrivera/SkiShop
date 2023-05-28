@@ -20,7 +20,12 @@ import java.awt.*;                                      // For communicating to 
 
 public class SkiShop extends JFrame 
 {
-    private String shopName;                            // The Ski Shop HAS-A name
+    private String shopName,                            // The Ski Shop HAS-A name
+                   brandFilter,                         // The Ski Shop HAS-A brand filter selection
+                   modelFilter,                         // The Ski Shop HAS-A model filter selection
+                   genderFilter,                        // The Ski Shop HAS-A gender filter selection
+                   skillFilter;                         // The Ski Shop HAS-A skill filter selection
+    private double priceFilter;                         // The Ski Shop HAS-A price filter selection
     private Customer customer = new Customer();         // The Ski Shop HAS-A customer
     private Cart cart = new Cart();                     // The Ski Shop HAS-A cart which holds the desired products to purchase
     private JPanel mainPanel,                           // The Ski Shop HAS-A main panel for all components
@@ -34,17 +39,21 @@ public class SkiShop extends JFrame
     private JTextArea welcomeTextArea;                  // The Ski Shop HAS-A text area for welcome message
     private JButton menuButton,                         // The Ski Shop HAS-A button for Product menu 
                     searchButton,                       // The Ski Shop HAS-A button for searching for Products
+                    filterButton,                       // The Ski Shop HAS-A button for an advanced seacrch with filters
                     loginButton,                        // The Ski Shop HAS-A button for login options
                     cartButton,                         // The Ski Shop HAS-A button for cart options
                     homeButton;                         // The Ski Shop HAS-A button for returning to "home" page
     private JMenuBar menuBar;                           // The Ski Shop HAS-A menu bar       
-    private JMenu fileMenu;                             // The Ski Shop HAS-A file menu
-    private JPopupMenu productMenu;                     // The Ski Shop HAS-A popup menu for Product types
+    private JMenu aboutMenu,                            // The Ski Shop HAS-A about menu for developer info
+                  fileMenu;                             // The Ski Shop HAS-A file menu
+    private JPopupMenu productMenu,                     // The Ski Shop HAS-A popup menu for Product types
+                       filterMenu;                      // The Ski Shop HAS-A popup menu for Product filters
     private JMenuItem skisItem,                         // The Ski Shop HAS-A menu item for skis
                       snowboardItem,                    // The Ski Shop HAS-A menu item for snowboards
                       bootsItem,                        // The Ski Shop HAS-A menu item for boots
                       bindingsItem,                     // The Ski Shop HAS-A menu item for bindings
                       polesItem,                        // The Ski Shop HAS-A menu item for ski poles
+                      aboutMenuItem,                    // The Ski Shop HAS-A about menu item for developer info
                       exitMenuItem,                     // The Ski Shop HAS-A menu item for exiting program
                       restartMenuItem;                  // The Ski Shop HAS-A menu item for restarting program
     private JTextField searchBar;                       // The Ski Shop HAS-A text field for a search bar        
@@ -128,6 +137,18 @@ public class SkiShop extends JFrame
      */
     public void buildMenuBar()
     {
+        // Creates "About" menu
+        aboutMenu = new JMenu(
+            "About");             
+        // Creates "Developer" menu item              
+        aboutMenuItem = 
+            new JMenuItem("Developer");        
+        // Adds functionality to button (open text box) 
+        aboutMenuItem.addActionListener(
+            new AboutItemListener());   
+        // Adds "About" menu item to about menu        
+        aboutMenu.add(aboutMenuItem);           
+
         // Create menu bar
         menuBar = new JMenuBar();
         // Create file menu
@@ -144,6 +165,8 @@ public class SkiShop extends JFrame
         fileMenu.add(restartMenuItem);
         // Add menu item to file menu
         fileMenu.add(exitMenuItem);
+        // Add about menu to menu bar
+        menuBar.add(aboutMenu);
         // Add file menu to menu bar
         menuBar.add(fileMenu);
         // Add menu bar to frame
@@ -274,6 +297,18 @@ public class SkiShop extends JFrame
         // Add Product menu button to search panel
         searchPanel.add(menuButton);
 
+        // Create filter button
+        filterButton = new JButton("Filters");
+        // Create popup menu of different Product types
+        filterMenu = new JPopupMenu();
+        // Add action listener to display filters for an advanced search
+        filterButton.addActionListener(new FilterButtonListener(filterButton, filterMenu));
+        // Add button to search panel
+        searchPanel.add(filterButton);
+
+        // Build filter menu (advanced search)
+        buildFilterMenu();
+
         // Create a text field for search
         searchBar = new JTextField("Enter a product or keyword");
         // Set the number of columns (desired width)
@@ -297,6 +332,184 @@ public class SkiShop extends JFrame
         searchButton.addActionListener(new SearchButtonListener(this, searchBar));
         // Add to search panel
         searchPanel.add(searchButton);
+    }
+
+    /**
+     * Purpose: Build filter menu
+     */
+    public void buildFilterMenu()
+    {
+        // Create product filters (categories)
+        JMenu brandMenu = new JMenu("Brands");
+        JMenu modelMenu = new JMenu("Models");
+        JMenu priceMenu = new JMenu("Price");
+        JMenu genderMenu = new JMenu("Gender");
+        JMenu skillMenu = new JMenu("Skill");
+
+        // Add menus to filter menu
+        filterMenu.add(brandMenu);
+        filterMenu.add(modelMenu);
+        filterMenu.add(priceMenu);
+        filterMenu.add(genderMenu);
+        filterMenu.add(skillMenu);
+
+        // Create brand checkboxes
+        JRadioButton rossignol = new JRadioButton("Rossignol");
+        JRadioButton burton = new JRadioButton("Burton");
+        JRadioButton k2 = new JRadioButton("K2");
+        JRadioButton marker = new JRadioButton("Marker");
+
+        // Create button group so only one button can be selected at a time
+        ButtonGroup brandGroup = new ButtonGroup();
+        // Add radio buttons to button group
+        brandGroup.add(rossignol);
+        brandGroup.add(burton);
+        brandGroup.add(k2);
+        brandGroup.add(marker);
+
+        // Add brands to menu
+        brandMenu.add(rossignol);
+        brandMenu.add(burton);
+        brandMenu.add(k2);
+        brandMenu.add(marker);
+
+        // Create model radio buttons
+        JRadioButton rallybird = new JRadioButton("Rallybird");
+        JRadioButton alltrack = new JRadioButton("Alltrack");
+        JRadioButton tactic = new JRadioButton("Tactic");
+        JRadioButton poker = new JRadioButton("Poker");
+        JRadioButton reckoner = new JRadioButton("Reckoner");
+        JRadioButton process = new JRadioButton("Process");
+        JRadioButton yeasayer = new JRadioButton("Yeasayer");
+        JRadioButton ruler = new JRadioButton("Ruler");
+        JRadioButton cartel = new JRadioButton("Cartel");
+        JRadioButton griffon = new JRadioButton("Griffon");
+
+        // Create button group so only one button can be selected at a time
+        ButtonGroup modelGroup = new ButtonGroup();
+        // Add model buttons to button group
+        modelGroup.add(rallybird);
+        modelGroup.add(alltrack);
+        modelGroup.add(tactic);
+        modelGroup.add(poker);
+        modelGroup.add(reckoner);
+        modelGroup.add(process);
+        modelGroup.add(yeasayer);
+        modelGroup.add(ruler);
+        modelGroup.add(cartel);
+        modelGroup.add(griffon);
+
+        // Add action listeners to models
+        rallybird.addActionListener(new RallybirdListener(this, rallybird));
+        alltrack.addActionListener(new AlltrackListener(this, alltrack));
+        tactic.addActionListener(new TacticListener(this, tactic));
+        poker.addActionListener(new PokerListener(this, poker));
+        reckoner.addActionListener(new ReckonerListener(this, reckoner));
+        process.addActionListener(new ProcessListener(this, process));
+        yeasayer.addActionListener(new YeasayerListener(this, yeasayer));
+        ruler.addActionListener(new RulerListener(this, ruler));
+        cartel.addActionListener(new CartelListener(this, cartel));
+        griffon.addActionListener(new GriffonListener(this, griffon));
+
+        // Hide models until brand is clicked
+        rallybird.setVisible(false);
+        alltrack.setVisible(false);
+        tactic.setVisible(false);
+        poker.setVisible(false);
+        reckoner.setVisible(false);
+        process.setVisible(false);
+        yeasayer.setVisible(false);
+        ruler.setVisible(false);
+        cartel.setVisible(false);
+        griffon.setVisible(false);
+
+        // Add radio buttons to model menu
+        modelMenu.add(rallybird);
+        modelMenu.add(alltrack);
+        modelMenu.add(tactic);
+        modelMenu.add(poker);
+        modelMenu.add(reckoner);
+        modelMenu.add(process);
+        modelMenu.add(yeasayer);
+        modelMenu.add(ruler);
+        modelMenu.add(cartel);
+        modelMenu.add(griffon);
+
+        // Add action listeners for brand radio buttons
+        rossignol.addActionListener(new RossignolListener(this, rossignol, rallybird, alltrack, tactic, poker, reckoner, process, yeasayer, ruler, cartel, griffon));
+        burton.addActionListener(new BurtonListener(this, burton, rallybird, alltrack, tactic, poker, reckoner, process, yeasayer, ruler, cartel, griffon));
+        k2.addActionListener(new K2Listener(this, k2, rallybird, alltrack, tactic, poker, reckoner, process, yeasayer, ruler, cartel, griffon));
+        marker.addActionListener(new MarkerListener(this, marker, rallybird, alltrack, tactic, poker, reckoner, process, yeasayer, ruler, cartel, griffon));
+
+        // Create price radio buttons
+        JRadioButton price50 = new JRadioButton("Under $50");
+        JRadioButton price100 = new JRadioButton("Under $100");
+        JRadioButton price250 = new JRadioButton("Under $250");
+        JRadioButton price500 = new JRadioButton("Under 500");
+
+        // Add action listeners for price radio buttons
+        price50.addActionListener(new Price50Listener(this, price50));
+        price100.addActionListener(new Price100Listener(this, price100));
+        price250.addActionListener(new Price250Listener(this, price250));
+        price500.addActionListener(new Price500Listener(this, price500));
+
+        // Create button group so only one button can be selected at a time
+        ButtonGroup priceGroup = new ButtonGroup();
+        // Add price buttons to button group
+        priceGroup.add(price50);
+        priceGroup.add(price100);
+        priceGroup.add(price250);
+        priceGroup.add(price500);
+
+        // Add prices to menu
+        priceMenu.add(price50);
+        priceMenu.add(price100);
+        priceMenu.add(price250);
+        priceMenu.add(price500);
+
+        // Create gender radio buttons
+        JRadioButton men = new JRadioButton("Men");
+        JRadioButton women = new JRadioButton("Women");
+        JRadioButton unisex = new JRadioButton("Unisex");
+
+        // Add action listeners for gender radio buttons
+        men.addActionListener(new MenListener(this, men));
+        women.addActionListener(new WomenListener(this, women));
+        unisex.addActionListener(new UnisexListener(this, unisex));
+
+        // Create button group so only one button can be selected at a time
+        ButtonGroup genderGroup = new ButtonGroup();
+        // Add gender buttons to button group
+        genderGroup.add(men);
+        genderGroup.add(women);
+        genderGroup.add(unisex);
+
+        // Add prices to menu
+        genderMenu.add(men);
+        genderMenu.add(women);
+        genderMenu.add(unisex);
+
+        // Create skill radio buttons
+        JRadioButton beginner = new JRadioButton("Beginner");
+        JRadioButton intermediate = new JRadioButton("Intermediate");
+        JRadioButton advanced = new JRadioButton("Advanced");
+
+        // Add action listeners for skill radio buttons
+        beginner.addActionListener(new BeginnerListener(this, beginner));
+        intermediate.addActionListener(new IntermediateListener(this, intermediate));
+        advanced.addActionListener(new AdvancedListener(this, advanced));
+
+        // Create button group so only one button can be selected at a time
+        ButtonGroup skillGroup = new ButtonGroup();
+        // Add skill buttons to button group
+        skillGroup.add(beginner);
+        skillGroup.add(intermediate);
+        skillGroup.add(advanced);
+
+        // Add prices to menu
+        skillMenu.add(beginner);
+        skillMenu.add(intermediate);
+        skillMenu.add(advanced);
     }
 
     /**
@@ -1080,5 +1293,44 @@ public class SkiShop extends JFrame
     public JButton getHomeButton()
     {
         return homeButton;
+    }
+
+    /**
+     * Purpose: set brand filter
+     */
+    public void setBrandFilter(String brandFilter)
+    {
+        this.brandFilter = brandFilter;
+    }
+
+    /**
+     * Purpose: set model filter
+     */
+    public void setModelFilter(String modelFilter)
+    {
+        this.modelFilter = modelFilter;
+    }
+    /**
+     * Purpose: set price filter
+     */
+    public void setPriceFilter(double priceFilter)
+    {
+        this.priceFilter = priceFilter;
+    }
+
+    /**
+     * Purpose: set gender filter
+     */
+    public void setGenderFilter(String genderFilter)
+    {
+        this.genderFilter = genderFilter;
+    }
+
+    /**
+     * Purpose: set skill filter
+     */
+    public void setSkillFilter(String skillFilter)
+    {
+        this.skillFilter = skillFilter;
     }
 }
